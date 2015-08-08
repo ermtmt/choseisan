@@ -1,0 +1,22 @@
+development:
+  adapter: mysql2
+  host: localhost
+  username: root
+  password:
+  database: coordination_dev
+  encoding: utf8
+
+test:
+  adapter: mysql2
+  host: localhost
+  username: root
+  password:
+  encoding: utf8
+  database: coordination_test
+
+production:
+  adapter: mysql2
+  encoding: utf8
+  database: coordination
+  pool: 5
+
