@@ -1,0 +1,11 @@
+ja:
+  activerecord:
+    models:
+      user: ユーザー
+    attributes:
+      user:
+        login_id: ログインID
+        password: パスワード
+        current_password: 現在のパスワード
+        name: 名前
+
