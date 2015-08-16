@@ -1,0 +1,28 @@
+.panel.panel-info
+  .panel-heading ユーザー情報編集
+  .panel-body
+    = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "form-horizontal" }) do |f|
+      .form-group
+        = f.label :login_id, class: "col-md-2 control-label"
+        .col-md-2
+          = f.text_field :login_id, autofocus: true, maxlength: 10, class: "form-control"
+      .form-group
+        = f.label :password, class: "col-md-2 control-label"
+        .col-md-2
+          = f.password_field :password, autocomplete: "off", maxlength: 10, class: "form-control"
+      .form-group
+        = f.label :current_password, class: "col-md-2 control-label"
+        .col-md-2
+          = f.password_field :current_password, autocomplete: "off", maxlength: 10, class: "form-control"
+      .form-group
+        = f.label :name, class: "col-md-2 control-label"
+        .col-md-2
+          = f.text_field :name, maxlength: 10, class: "form-control"
+      .form-group
+        .col-md-offset-2.col-md-2
+          = f.submit "更新", class: "btn btn-primary"
+.panel.panel-info
+  .panel-heading アカウントの削除
+  .panel-body
+    = button_to "アカウントを削除", registration_path(resource_name), method: :delete, data: { confirm: "アカウントを削除します。" }, class: "btn btn-danger"
+

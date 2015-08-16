@@ -1,0 +1,20 @@
+.panel.panel-info
+  .panel-heading サインアップ
+  .panel-body
+    = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "form-horizontal" }) do |f|
+      .form-group
+        = f.label :login_id, class: "col-md-2 control-label"
+        .col-md-2
+          = f.text_field :login_id, autofocus: true, maxlength: 10, class: "form-control"
+      .form-group
+        = f.label :password, class: "col-md-2 control-label"
+        .col-md-2
+          = f.password_field :password, autocomplete: "off", maxlength: 10, class: "form-control"
+      .form-group
+        = f.label :name, class: "col-md-2 control-label"
+        .col-md-2
+          = f.text_field :name, maxlength: 10, class: "form-control"
+      .form-group
+        .col-md-offset-2.col-md-2
+          = f.submit "登録", class: "btn btn-primary"
+

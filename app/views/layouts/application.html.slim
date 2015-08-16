@@ -1,0 +1,30 @@
+doctype html
+html
+  head
+    title 調整くん
+    meta charset="utf-8"
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  body
+    header.navbar.navbar-default
+      .container
+        .navbar-header
+          = link_to "調整くん", root_path, class: "navbar-brand"
+        ul.nav.navbar-nav.navbar-right
+          - if user_signed_in?
+            li = link_to "#{current_user.name} さん", edit_user_registration_path, :class => "navbar-link"
+            li = link_to "ログアウト", destroy_user_session_path, method: :delete, :class => "navbar-link"
+          - else
+            li = link_to "サインアップ", new_user_registration_path, :class => 'navbar-link'
+            li = link_to "ログイン", new_user_session_path, :class => 'navbar-link'
+    .container
+      - if notice
+        p.alert.alert-success = notice
+      - if alert
+        p.alert.alert-danger = alert
+      = devise_error_messages!
+      .container
+        == yield
+
