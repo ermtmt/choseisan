@@ -21,5 +21,7 @@ group :development, :test do
   gem 'pry-doc'            # mtmt add
   gem 'pry-byebug'         # mtmt add
   gem 'pry-stack_explorer' # mtmt add
+  gem 'better_errors'      # mtmt add
+  gem 'binding_of_caller'  # mtmt add
 end
 
