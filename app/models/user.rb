@@ -13,5 +13,7 @@ class User < ActiveRecord::Base
   validates :login_id, length: { maximum: 10 }, presence: true, uniqueness: true
   validates :password, length: { maximum: 10 }, presence: true
   validates :name,     length: { maximum: 10 }, presence: true
+
+  has_many :created_events, class_name: 'Event', foreign_key: :user_id
 end
 

@@ -1,0 +1,14 @@
+- ph_title = "（50文字以内・必須）　今期もお疲れ様でした飲み会　打ち合わせ　など"
+- ph_memo = "（200文字以内・任意）&#13;&#10;飲み会の日程調整しましょう！&#13;&#10;出欠〆切は25日です！".html_safe
+= simple_form_for(@event) do |f|
+  - if @event.errors.any?
+    .alert.alert-danger
+      ul
+        - @event.errors.full_messages.each do |msg|
+          li = msg
+  .form-inputs
+    = f.input :title, maxlength: 50, required: false, input_html: { placeholder: ph_title } 
+    = f.input :memo, input_html: { rows: 5, placeholder: ph_memo }
+  .form-actions
+    = f.button :submit, class: "btn btn-primary btn-lg"
+

@@ -2,10 +2,14 @@ ja:
   activerecord:
     models:
       user: ユーザー
+      event: イベント
     attributes:
       user:
         login_id: ログインID
         password: パスワード
         current_password: 現在のパスワード
         name: 名前
+      event:
+        title: イベント名
+        memo: メモ
 
