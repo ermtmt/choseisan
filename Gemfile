@@ -9,7 +9,9 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
-gem 'devise'  # mtmt add
+gem 'devise'         # mtmt add
+gem 'slim-rails'     # mtmt add
+gem 'bootstrap-sass' # mtmt add
 
 group :development, :test do
   gem 'byebug'
