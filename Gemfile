@@ -12,6 +12,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'devise'         # mtmt add
 gem 'slim-rails'     # mtmt add
 gem 'bootstrap-sass' # mtmt add
+gem 'simple_form'    # mtmt add
 
 group :development, :test do
   gem 'byebug'
