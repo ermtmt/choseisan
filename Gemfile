@@ -9,11 +9,13 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
-gem 'devise'           # mtmt add
-gem 'slim-rails'       # mtmt add
-gem 'bootstrap-sass'   # mtmt add
-gem 'simple_form'      # mtmt add
-gem 'active_decorator' # mtmt add
+gem 'devise'             # mtmt add
+gem 'slim-rails'         # mtmt add
+gem 'bootstrap-sass'     # mtmt add
+gem 'simple_form'        # mtmt add
+gem 'active_decorator'   # mtmt add
+gem 'kaminari'           # mtmt add
+gem 'kaminari-bootstrap' # mtmt add
 
 group :development, :test do
   gem 'byebug'
