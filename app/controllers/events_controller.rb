@@ -21,8 +21,8 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = current_user.created_events.build(event_params)
-    if @event.save
+    @event = current_user.created_events.build
+    if EventService.bulk_save(@event, event_params)
       redirect_to event_path(@event.hash_id), notice: 'イベントを作成しました。'
     else
       render :new
@@ -30,7 +30,7 @@ class EventsController < ApplicationController
   end
 
   def update
-    if @event.update(event_params)
+    if EventService.bulk_save(@event, event_params)
       redirect_to event_path(@event.hash_id), notice: 'イベント情報を変更しました。'
     else
       render :edit

@@ -17,6 +17,7 @@ module Coordination
     config.i18n.default_locale = :ja
     config.active_record.raise_in_transactional_callbacks = true
     config.quiet_assets = true
+    config.autoload_paths += %W( #{config.root}/app/services )
   end
 end
 
