@@ -28,5 +28,6 @@ group :development, :test do
   gem 'better_errors'      # mtmt add
   gem 'binding_of_caller'  # mtmt add
   gem 'quiet_assets'       # mtmt add
+  gem 'rails-erd'          # mtmt add
 end
 
