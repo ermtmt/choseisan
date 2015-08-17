@@ -4,7 +4,7 @@
   .col-md-8
     .list-group
       - @events.each do |event|
-        = link_to event, class: "list-group-item"
+        = link_to event_path(event.hash_id), class: "list-group-item"
           h4.list-group-item-heading = event.title
           p.list-group-item-text = event.memo
   .col-md-4

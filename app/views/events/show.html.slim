@@ -4,7 +4,7 @@ javascript:
   });
 .page-header
   h3 = @event.title
-  h5 回答数：0
+  div 回答数：0
 .row
   .col-md-8
     .panel.panel-success
@@ -13,9 +13,17 @@ javascript:
     .panel.panel-success
       .panel-heading メモ
       .panel-body = simple_format h @event.memo
+    .panel.panel-success
+      .panel-heading このイベントのURL
+      .panel-body = text_field_tag "event-url", "#{request.url}", readonly: true, onclick: "this.select();", class: "form-control"
   .col-md-4
-    - if owner?
-      = link_to "イベントの再編集", edit_event_path(@event), class: "btn btn-success btn-lg btn-block"
-      = link_to "イベントを削除する", event_path(@event), method: :delete, data: { confirm: "削除してもよろしいですか？", toggle: "popover", trigger: "hover", placement: "left", title: "注意！", content: "一度削除すると復旧はできません。".html_safe }, id: "btn-event-delete", class: "btn btn-danger btn-lg btn-block"
-    br
-    = link_to "イベント一覧へ", events_path, class: "btn btn-default btn-lg btn-block"
+    / この画面はログインせずにアクセス可能
+    - if user_signed_in?
+      - if owner?
+        = link_to "イベントの再編集", edit_event_path(@event), class: "btn btn-success btn-lg btn-block"
+        = link_to "イベントを削除する", event_path(@event), method: :delete,
+          data: { confirm: "削除してもよろしいですか？", toggle: "popover", trigger: "hover", placement: "left", title: "注意！", content: "一度削除すると復旧はできません。" },
+          id: "btn-event-delete", class: "btn btn-danger btn-lg btn-block"
+        hr
+      = link_to "イベント一覧へ", events_path, class: "btn btn-default btn-lg btn-block"
+

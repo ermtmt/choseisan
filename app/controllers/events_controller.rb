@@ -1,5 +1,6 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authenticate_user!, only: [:show]
+  before_action :set_event, only: [:edit, :update, :destroy]
 
   helper_method :owner?
 
@@ -8,6 +9,8 @@ class EventsController < ApplicationController
   end
 
   def show
+    # ログインせずにアクセス可能なため
+    @event = Event.find_by!(hash_id: params[:id])
   end
 
   def new
@@ -20,7 +23,7 @@ class EventsController < ApplicationController
   def create
     @event = current_user.created_events.build(event_params)
     if @event.save
-      redirect_to @event, notice: 'イベントを作成しました。'
+      redirect_to event_path(@event.hash_id), notice: 'イベントを作成しました。'
     else
       render :new
     end
@@ -28,7 +31,7 @@ class EventsController < ApplicationController
 
   def update
     if @event.update(event_params)
-      redirect_to @event, notice: 'イベント情報を変更しました。'
+      redirect_to event_path(@event.hash_id), notice: 'イベント情報を変更しました。'
     else
       render :edit
     end
