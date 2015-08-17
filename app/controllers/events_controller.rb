@@ -53,6 +53,6 @@ class EventsController < ApplicationController
     end
 
     def event_params
-      params.require(:event).permit(:title, :memo)
+      params.require(:event).permit(:title, :memo, :options_text)
     end
 end
