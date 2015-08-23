@@ -1,7 +1,7 @@
-class CreateEventOptions < ActiveRecord::Migration
+class CreateOptions < ActiveRecord::Migration
   def change
-    create_table :event_options do |t|
-      t.string :option, null: false
+    create_table :options do |t|
+      t.string :text, null: false
       t.references :event, index: true, foreign_key: true, null: false
 
       t.timestamps null: false
