@@ -1,0 +1,4 @@
+- ph_options_text = "（必須）&#13;&#10;候補日程／日時などを入力してください。候補の区切りは改行で判断されます。&#13;&#10;例：&#13;&#10;4/1(月) 19:00〜&#13;&#10;4/2(火) 20:00〜&#13;&#10;4/3(水) 21:00〜".html_safe
+
+= f.input :options_text, as: :text, required: false, input_html: { rows: 8, placeholder: ph_options_text }
+

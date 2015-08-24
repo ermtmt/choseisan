@@ -2,7 +2,7 @@
   h3 イベント再編集
 .row
   .col-md-8
-    == render 'form'
+    == render 'form', { type: :edit }
   .col-md-4
     = link_to "キャンセル", event_path(@event.hash_id), class: "btn btn-default btn-lg btn-block"
 

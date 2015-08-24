@@ -2,7 +2,7 @@
   h3 イベント作成
 .row
   .col-md-8
-    == render 'form'
+    == render 'form', { type: :new }
   .col-md-4
     = link_to "キャンセル", events_path, class: "btn btn-default btn-lg btn-block"
 

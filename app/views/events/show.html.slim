@@ -26,4 +26,14 @@ javascript:
           id: "btn-event-delete", class: "btn btn-danger btn-lg btn-block"
         hr
       = link_to "イベント一覧へ", events_path, class: "btn btn-default btn-lg btn-block"
+.panel.panel-success
+  .panel-heading 日にち候補
+  .panel-body
+    p 各自の出欠状況を変更するには名前のリンクをクリックしてください。
+    table.table.table-bordered.table-striped.table-hover
+      tr.warning
+        th 日程
+      - @event.options.each do |option|
+        tr
+          td = option.text
 

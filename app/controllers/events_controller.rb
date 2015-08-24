@@ -22,7 +22,7 @@ class EventsController < ApplicationController
 
   def create
     @event = current_user.created_events.build
-    if EventService.bulk_save(@event, event_params)
+    if EventService.bulk_insert(@event, event_params)
       redirect_to event_path(@event.hash_id), notice: 'イベントを作成しました。'
     else
       render :new
@@ -30,7 +30,7 @@ class EventsController < ApplicationController
   end
 
   def update
-    if EventService.bulk_save(@event, event_params)
+    if EventService.bulk_update(@event, event_params)
       redirect_to event_path(@event.hash_id), notice: 'イベント情報を変更しました。'
     else
       render :edit
@@ -53,6 +53,6 @@ class EventsController < ApplicationController
     end
 
     def event_params
-      params.require(:event).permit(:title, :memo, :options_text)
+      params.require(:event).permit(:title, :memo, :options_text, options_deletes: [])
     end
 end

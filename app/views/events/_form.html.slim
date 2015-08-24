@@ -1,6 +1,6 @@
 - ph_title = "（50文字以内・必須）　今期もお疲れ様でした飲み会　打ち合わせ　など"
 - ph_memo = "（200文字以内・任意）&#13;&#10;飲み会の日程調整しましょう！&#13;&#10;出欠〆切は25日です！".html_safe
-- ph_options_text = "（必須）&#13;&#10;候補日程／日時などを入力してください。候補の区切りは改行で判断されます。&#13;&#10;例：&#13;&#10;4/1(月) 19:00〜&#13;&#10;4/2(火) 20:00〜&#13;&#10;4/3(水) 21:00〜".html_safe
+
 = simple_form_for(@event) do |f|
   - if @event.errors.any?
     .alert.alert-danger
@@ -10,7 +10,10 @@
   .form-inputs
     = f.input :title, maxlength: 50, required: false, input_html: { placeholder: ph_title } 
     = f.input :memo, input_html: { rows: 4, placeholder: ph_memo }
-    = f.input :options_text, as: :text, required: false, input_html: { rows: 8, placeholder: ph_options_text }
+    - if local_assigns[:type] == :new
+      == render 'form_new', f: f
+    - else
+      == render 'form_edit', f: f
   .form-actions
     = f.button :submit, class: "btn btn-primary btn-lg"
 
