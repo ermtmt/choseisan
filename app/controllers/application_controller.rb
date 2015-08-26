@@ -6,8 +6,7 @@ class ApplicationController < ActionController::Base
   after_filter :store_location
 
   def after_sign_in_path_for(resource)
-    #session[:previous_url] || events_path
-    events_path
+    session[:previous_url] || events_path
   end
 
   protected
@@ -20,9 +19,12 @@ class ApplicationController < ActionController::Base
     def store_location
       if (request.fullpath != "/users/sign_in" && \
           request.fullpath != "/users/sign_up" && \
+          request.fullpath != "/users/sign_out" && \
           request.fullpath != "/users/edit" && \
+          request.fullpath != "/" && \
           !request.xhr?)
         session[:previous_url] = request.fullpath 
+        puts session[:previous_url]
       end
     end
 end
