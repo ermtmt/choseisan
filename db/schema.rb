@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150817081922) do
+ActiveRecord::Schema.define(version: 20150826044252) do
+
+  create_table "event_entries", force: :cascade do |t|
+    t.integer  "event_id",   limit: 4,   null: false
+    t.integer  "user_id",    limit: 4,   null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "comment",    limit: 255
+  end
+
+  add_index "event_entries", ["event_id", "user_id"], name: "index_event_entries_on_event_id_and_user_id", unique: true, using: :btree
+  add_index "event_entries", ["event_id"], name: "index_event_entries_on_event_id", using: :btree
+  add_index "event_entries", ["user_id", "event_id"], name: "index_event_entries_on_user_id_and_event_id", unique: true, using: :btree
+  add_index "event_entries", ["user_id"], name: "index_event_entries_on_user_id", using: :btree
 
   create_table "events", force: :cascade do |t|
     t.string   "title",      limit: 255
@@ -43,5 +56,7 @@ ActiveRecord::Schema.define(version: 20150817081922) do
 
   add_index "users", ["login_id"], name: "index_users_on_login_id", unique: true, using: :btree
 
+  add_foreign_key "event_entries", "events"
+  add_foreign_key "event_entries", "users"
   add_foreign_key "options", "events"
 end

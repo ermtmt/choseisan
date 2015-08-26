@@ -3,6 +3,7 @@ ja:
     models:
       user: ユーザー
       event: イベント
+      event_entry: イベントエントリー
     attributes:
       user:
         login_id: ログインID
@@ -13,4 +14,6 @@ ja:
         title: イベント名
         memo: メモ
         options_text: 候補日程
+      event_entry:
+        comment: コメント
 
