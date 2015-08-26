@@ -1,16 +1,16 @@
 class EventsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show]
-  before_action :set_event, only: [:edit, :update, :destroy]
+  before_action :set_event, only: [:show]
+  before_action :set_my_event, only: [:edit, :update, :destroy]
+  before_action :set_event_entry, only: [:show]
 
-  helper_method :owner?
+  helper_method :owner?, :entered?
 
   def index
     @events = current_user.created_events.page(params[:page])
   end
 
   def show
-    # ログインせずにアクセス可能なため
-    @event = Event.find_by!(hash_id: params[:id])
   end
 
   def new
@@ -44,12 +44,24 @@ class EventsController < ApplicationController
 
   def owner?
     return false if current_user.nil? || @event.nil?
-    result = current_user.id == @event.owner.id
+    current_user == @event.owner
+  end
+
+  def entered?
+    !current_user.nil? && !@event.event_entries.find_by(user_id: current_user).nil?
   end
 
   private
     def set_event
+      @event = Event.find_by!(hash_id: params[:id]) # ログインレスでアクセス可能にするため
+    end
+
+    def set_my_event
       @event = current_user.created_events.find(params[:id])
+    end
+
+    def set_event_entry
+      @event_entry = @event.event_entry(current_user)
     end
 
     def event_params

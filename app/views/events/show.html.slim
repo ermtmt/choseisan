@@ -2,9 +2,12 @@ javascript:
   $(function() {
     $("#btn-event-delete").popover();
   });
+
+- title_entry = entered? ? "出欠を変更する" : "出欠を入力する"
+
 .page-header
   h3 = @event.title
-  div 回答数：0
+  div 回答数：#{@event.event_entries.count}
 .row
   .col-md-8
     .panel.panel-success
@@ -19,21 +22,47 @@ javascript:
   .col-md-4
     / この画面はログインせずにアクセス可能
     - if user_signed_in?
+      = link_to "イベント一覧へ", events_path, class: "btn btn-default btn-lg btn-block"
       - if owner?
+        hr
         = link_to "イベントの再編集", edit_event_path(@event), class: "btn btn-success btn-lg btn-block"
         = link_to "イベントを削除する", event_path(@event), method: :delete,
           data: { confirm: "削除してもよろしいですか？", toggle: "popover", trigger: "hover", placement: "left", title: "注意！", content: "一度削除すると復旧はできません。" },
           id: "btn-event-delete", class: "btn btn-danger btn-lg btn-block"
-        hr
-      = link_to "イベント一覧へ", events_path, class: "btn btn-default btn-lg btn-block"
-.panel.panel-success
-  .panel-heading 日にち候補
-  .panel-body
-    p 各自の出欠状況を変更するには名前のリンクをクリックしてください。
-    table.table.table-bordered.table-striped.table-hover
-      tr.warning
-        th 日程
-      - @event.options.each do |option|
-        tr
-          td = option.text
+  .col-md-12
+    .panel.panel-success
+      .panel-heading 日にち候補
+      .panel-body
+        table.table.table-bordered.table-striped.table-hover
+          tr.warning
+            th width="15%" 日程
+            - @event.event_entries.each do |entry|
+              th = entry.user.name
+          - @event.options.each do |option|
+            tr
+              td = option.text
+              td aaa
+          tr
+            th.warning コメント
+            - @event.event_entries.each do |entry|
+              td = entry.comment
+        - if user_signed_in?
+          = link_to title_entry, "#modal-area", data: { toggle: "modal" }, class: "btn btn-primary btn-lg"
+        - else
+          = link_to title_entry, event_entry_path(@event), method: :post, class: "btn btn-primary btn-lg"
+
+#modal-area.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close data-dismiss="modal" &times;
+        h4.modal-title #{title_entry}
+      = simple_form_for(@event_entry, url: event_entry_path(@event), remote: true) do |f|
+        .modal-body
+          div 日にち候補
+          div xxx
+          div = f.input :comment, maxlength: 50
+        .modal-footer
+          = f.submit "保存", class: "btn btn-primary", data: { disable_with: "送信中..." }
+          button.btn.btn-default data-dismiss="modal" キャンセル
 

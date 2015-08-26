@@ -15,5 +15,6 @@ class User < ActiveRecord::Base
   validates :name,     length: { maximum: 10 }, presence: true
 
   has_many :created_events, class_name: 'Event', foreign_key: :user_id
+  has_many :event_entries, foreign_key: :event_id, dependent: :destroy
 end
 
