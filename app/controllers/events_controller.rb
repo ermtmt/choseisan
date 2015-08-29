@@ -43,12 +43,12 @@ class EventsController < ApplicationController
   end
 
   def owner?
-    return false if current_user.nil? || @event.nil?
+    return false if !current_user || !@event
     current_user == @event.owner
   end
 
   def entered?
-    !current_user.nil? && !@event.event_entries.find_by(user_id: current_user).nil?
+    current_user && @event.event_entries.exists?(user_id: current_user)
   end
 
   private
