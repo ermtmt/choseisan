@@ -3,7 +3,7 @@ javascript:
     $("#btn-event-delete").popover();
   });
 
-- title_entry = entered? ? "出欠を変更する" : "出欠を入力する"
+- title_entry = @event.entered? ? "出欠を変更する" : "出欠を入力する"
 
 .page-header
   h3 = @event.title
@@ -23,7 +23,7 @@ javascript:
     / この画面はログインせずにアクセス可能
     - if user_signed_in?
       = link_to "イベント一覧へ", events_path, class: "btn btn-default btn-lg btn-block"
-      - if owner?
+      - if @event.owner?
         hr
         = link_to "イベントの再編集", edit_event_path(@event), class: "btn btn-success btn-lg btn-block"
         = link_to "イベントを削除する", event_path(@event), method: :delete,

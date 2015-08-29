@@ -8,6 +8,7 @@ class Event < ActiveRecord::Base
   belongs_to :owner, class_name: 'User', foreign_key: :user_id
   has_many :options, foreign_key: :event_id, dependent: :destroy
   has_many :event_entries, foreign_key: :event_id, dependent: :destroy
+  has_many :entry_users, through: :event_entries, source: :user
 
   attr_accessor :options_text
   attr_accessor :options_deletes

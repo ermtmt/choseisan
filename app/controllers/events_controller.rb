@@ -4,8 +4,6 @@ class EventsController < ApplicationController
   before_action :set_my_event, only: [:edit, :update, :destroy]
   before_action :set_event_entry, only: [:show]
 
-  helper_method :owner?, :entered?
-
   def index
     @events = Event.related_events(current_user).page(params[:page])
   end
@@ -42,18 +40,9 @@ class EventsController < ApplicationController
     redirect_to events_url, notice: 'イベントを削除しました。'
   end
 
-  def owner?
-    return false if !current_user || !@event
-    current_user == @event.owner
-  end
-
-  def entered?
-    current_user && @event.event_entries.exists?(user_id: current_user)
-  end
-
   private
     def set_event
-      @event = Event.find_by!(hash_id: params[:id]) # ログインレスでアクセス可能にするため
+      @event = Event.find_by!(hash_id: params[:id]) # ログインレスでもアクセス可能
     end
 
     def set_my_event
