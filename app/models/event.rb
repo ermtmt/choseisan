@@ -12,6 +12,11 @@ class Event < ActiveRecord::Base
   attr_accessor :options_text
   attr_accessor :options_deletes
 
+  scope :related_events, ->(user) {
+    eager_load(:event_entries)
+      .where(Event.arel_table[:user_id].eq(user).or(EventEntry.arel_table[:user_id].eq(user)))
+  }
+
   def event_entry(user)
     event_entry = self.event_entries.find_by(user_id: user)
     if event_entry.nil?

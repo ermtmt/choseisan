@@ -7,7 +7,7 @@ class EventsController < ApplicationController
   helper_method :owner?, :entered?
 
   def index
-    @events = current_user.created_events.page(params[:page])
+    @events = Event.related_events(current_user).page(params[:page])
   end
 
   def show
