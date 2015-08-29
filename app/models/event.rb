@@ -18,11 +18,9 @@ class Event < ActiveRecord::Base
   }
 
   def event_entry(user)
-    event_entry = self.event_entries.find_by(user_id: user)
-    if event_entry.nil?
-      event_entry = EventEntry.new(event: self, user: user)
+    EventEntry.find_or_initialize_by(event_id: self, user_id: user) do |event_entry|
+      event_entry.attributes = { event: self, user: user }
     end
-    event_entry
   end
 
   private
