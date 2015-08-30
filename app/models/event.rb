@@ -21,6 +21,11 @@ class Event < ActiveRecord::Base
   def event_entry(user)
     EventEntry.find_or_initialize_by(event_id: self, user_id: user) do |event_entry|
       event_entry.attributes = { event: self, user: user }
+      self.options.each do |option|
+        option_entry = option.option_entries.build
+        option_entry.attributes = { option: option, event_entry: event_entry }
+        event_entry.option_entries << option_entry
+      end
     end
   end
 

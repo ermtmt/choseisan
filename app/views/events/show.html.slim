@@ -59,8 +59,12 @@ javascript:
         h4.modal-title #{title_entry}
       = simple_form_for(@event_entry, url: event_entry_path(@event), remote: true) do |f|
         .modal-body
-          div 日にち候補
-          div xxx
+          p 日にち候補
+          table.table.table-bordered.table-striped
+            - @event_entry.option_entries.each do |option_entry|
+              tr
+                td.warning width="30%" = option_entry.option.text
+                td = option_entry.feeling
           div = f.input :comment, maxlength: 50
         .modal-footer
           = f.submit "保存", class: "btn btn-primary", data: { disable_with: "送信中..." }
