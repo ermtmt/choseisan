@@ -1,6 +1,7 @@
 javascript:
   $(function() {
     $("#btn-event-delete").popover();
+    $(":radio[id^=event_entry]:checked").parent("label").addClass("active")
   });
 
 - title_entry = @event.entered? ? "出欠を変更する" : "出欠を入力する"
@@ -62,11 +63,26 @@ javascript:
           p 日にち候補
           table.table.table-bordered.table-striped
             - @event_entry.option_entries.each do |option_entry|
+              - radio_options_ng      = option_entry.NG?      ? { checked: true } : nil
+              - radio_options_neither = option_entry.Neither? ? { checked: true } : nil
+              - radio_options_ok      = option_entry.OK?      ? { checked: true } : nil
+              = hidden_field_tag "event_entry[feelings][#{option_entry.id}][option_id]", option_entry.option_id
               tr
                 td.warning width="30%" = option_entry.option.text
-                td = option_entry.feeling
-          div = f.input :comment, maxlength: 50
+                td
+                  .btn-group data-toggle="buttons"
+                    label.btn.btn-lg.btn-success
+                      = radio_button_tag "event_entry[feelings][#{option_entry.id}][feeling]", OptionEntry.feelings[:NG], radio_options_ng
+                      span 　Ｘ　
+                    label.btn.btn-lg.btn-success
+                      = radio_button_tag "event_entry[feelings][#{option_entry.id}][feeling]", OptionEntry.feelings[:Neither], radio_options_neither
+                      span 　△　
+                    label.btn.btn-lg.btn-success
+                      = radio_button_tag "event_entry[feelings][#{option_entry.id}][feeling]", OptionEntry.feelings[:OK], radio_options_ok
+                      span 　◯　
+          div.form-group
+            = f.input :comment, maxlength: 50, class: "form-control"
         .modal-footer
-          = f.submit "保存", class: "btn btn-primary", data: { disable_with: "送信中..." }
+          = f.button :submit, "保存", class: "btn btn-primary", data: { disable_with: "送信中..." }
           button.btn.btn-default data-dismiss="modal" キャンセル
 

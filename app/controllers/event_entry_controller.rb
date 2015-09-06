@@ -1,25 +1,25 @@
-class EntriesController < ApplicationController
+class EventEntryController < ApplicationController
   before_action :set_event
   
   def create
-    event_entry = @event.event_entries.build(entries_params)
+    event_entry = @event.event_entries.build
     event_entry.user = current_user
-    if event_entry.save
+    if EventEntryService.bulk_insert(event_entry, entries_params)
       flash[:notice] = "出欠を登録しました。"
       render js: "location.reload()"
     else
-      flash[:error] = "出欠の登録に失敗しました。"
+      flash[:alert] = "出欠の登録に失敗しました。"
       render js: "location.reload()"
     end
   end
 
   def update
     event_entry = @event.event_entries.find_by(user_id: current_user)
-    if event_entry.update(entries_params)
+    if EventEntryService.bulk_update(event_entry, entries_params)
       flash[:notice] = "出欠を変更しました。"
       render js: "location.reload()"
     else
-      flash[:error] = "出欠の変更に失敗しました。"
+      flash[:alert] = "出欠の変更に失敗しました。"
       render js: "location.reload()"
     end
  end
@@ -33,6 +33,6 @@ class EntriesController < ApplicationController
     end
 
     def entries_params
-      params.require(:event_entry).permit(:comment)
+      params.require(:event_entry).permit(:comment, feelings: [:option_id, :feeling])
     end
 end
