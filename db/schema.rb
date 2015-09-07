@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150829231844) do
+ActiveRecord::Schema.define(version: 20150907100203) do
 
   create_table "event_entries", force: :cascade do |t|
     t.integer  "event_id",   limit: 4,   null: false
@@ -51,10 +51,11 @@ ActiveRecord::Schema.define(version: 20150829231844) do
   add_index "option_entries", ["option_id"], name: "index_option_entries_on_option_id", using: :btree
 
   create_table "options", force: :cascade do |t|
-    t.string   "text",       limit: 255, null: false
-    t.integer  "event_id",   limit: 4,   null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "text",       limit: 255,             null: false
+    t.integer  "status",     limit: 4,   default: 0, null: false
+    t.integer  "event_id",   limit: 4,               null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   add_index "options", ["event_id"], name: "index_options_on_event_id", using: :btree
