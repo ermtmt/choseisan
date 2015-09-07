@@ -2,25 +2,23 @@ class EventEntryController < ApplicationController
   before_action :set_event
   
   def create
-    event_entry = @event.event_entries.build
-    event_entry.user = current_user
-    if EventEntryService.bulk_insert(event_entry, entries_params)
+    @event_entry = @event.event_entries.build
+    @event_entry.user = current_user
+    if EventEntryService.bulk_insert(@event_entry, entries_params)
       flash[:notice] = "出欠を登録しました。"
       render js: "location.reload()"
     else
-      flash[:alert] = "出欠の登録に失敗しました。"
-      render js: "location.reload()"
+      render :errors
     end
   end
 
   def update
-    event_entry = @event.event_entries.find_by(user_id: current_user)
-    if EventEntryService.bulk_update(event_entry, entries_params)
+    @event_entry = @event.event_entries.find_by(user_id: current_user)
+    if EventEntryService.bulk_update(@event_entry, entries_params)
       flash[:notice] = "出欠を変更しました。"
       render js: "location.reload()"
     else
-      flash[:alert] = "出欠の変更に失敗しました。"
-      render js: "location.reload()"
+      render :errors
     end
  end
 

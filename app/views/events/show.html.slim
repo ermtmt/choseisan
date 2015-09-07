@@ -60,6 +60,7 @@ javascript:
         h4.modal-title #{title_entry}
       = simple_form_for(@event_entry, url: event_entry_path(@event), remote: true) do |f|
         .modal-body
+          #modal-dialog-errors
           p 日にち候補
           table.table.table-bordered.table-striped
             - @event_entry.option_entries.each do |option_entry|
