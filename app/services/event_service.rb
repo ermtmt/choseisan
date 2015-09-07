@@ -24,6 +24,7 @@ class EventService
     status = true
     ActiveRecord::Base.transaction do
       # Event
+      event.lock!
       event.attributes = params.slice(:title, :memo, :options_deletes, :options_text)
       unless event.save
         status = false

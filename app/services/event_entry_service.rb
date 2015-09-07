@@ -32,6 +32,8 @@ class EventEntryService
     raise TypeError unless event_entry.is_a?(EventEntry) || params.is_a?(Hash)
     status = true
     ActiveRecord::Base.transaction do
+      event_entry.lock!
+
       # EventEntry
       unless event_entry.update(comment: params[:comment])
         status = false
