@@ -42,7 +42,15 @@ javascript:
           - @event.options.each do |option|
             tr
               td = option.text
-              td aaa
+              - option.option_entries.each do |option_entry|
+                - if option_entry.event_entry.persisted?
+                  td style="font-size: 1.5em;"
+                    - if option_entry.NG?
+                      .label.label-danger &nbsp; Ｘ &nbsp;
+                    - elsif option_entry.Neither?
+                      span.label.label-warning &nbsp; △ &nbsp;
+                    - elsif option_entry.OK?
+                      .label.label-success &nbsp; ◯ &nbsp;
           tr
             th.warning コメント
             - @event.event_entries.each do |entry|
