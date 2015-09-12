@@ -5,4 +5,8 @@ class OptionEntry < ActiveRecord::Base
 
   belongs_to :option
   belongs_to :event_entry
+
+  scope :feeling_groups, ->(option_id) {
+    where(option_id: option_id).group(:feeling).order(feeling: :asc).count
+  }
 end

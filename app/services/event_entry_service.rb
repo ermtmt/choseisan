@@ -42,7 +42,10 @@ class EventEntryService
 
       # OptionEntry
       params[:feelings].each do |option_entry_id, attrs|
-        option_entry = event_entry.option_entries.find(option_entry_id)
+        option_entry = event_entry.option_entries.find_or_initialize_by(id: option_entry_id) do |option_entry|
+          option_entry.attributes = { id: nil, option_id: attrs[:option_id], event_entry_id: event_entry.id }
+          option_entry[:feeling] = attrs[:feeling]
+        end
         option_entry[:feeling] = attrs[:feeling]
         if option_entry.invalid?
           event_entry.errors[:base] << "回答の選択が不正です。"

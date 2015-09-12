@@ -34,27 +34,43 @@ javascript:
     .panel.panel-success
       .panel-heading 日にち候補
       .panel-body
-        table.table.table-bordered.table-striped.table-hover
+        table.table.table-bordered.table-hover
           tr.warning
-            th width="15%" 日程
-            - @event.event_entries.each do |entry|
-              th = entry.user.name
+            th.text-center width="15%" 日程
+            th.text-center width="5%" ◯
+            th.text-center width="5%" △
+            th.text-center width="5%" Ｘ
+            - @event.event_entries.order(:id).each do |event_entry|
+              th.text-center = event_entry.user.name
           - @event.options.each do |option|
-            tr
+            - option.calc_option_entry
+            - if option.rate == 100
+              - line_color = "#68D973"
+            - elsif option.rate == 0
+              - line_color = "#ffffff"
+            - else
+              - line_color = "#D5EBD7"
+            tr bgcolor="#{line_color}"
               td = option.text
-              - option.option_entries.each do |option_entry|
-                - if option_entry.event_entry.persisted?
-                  td style="font-size: 1.5em;"
+              td.text-center = option.count_ok
+              td.text-center = option.count_neither
+              td.text-center = option.count_ng
+              - @event.event_entries.order(:id).each do |event_entry|
+                - option_entry = OptionEntry.find_by(option: option, event_entry: event_entry)
+                - if option_entry.blank?
+                  td
+                - else
+                  td.text-center style="font-size: 1.5em;"
                     - if option_entry.NG?
                       .label.label-danger &nbsp; Ｘ &nbsp;
                     - elsif option_entry.Neither?
-                      span.label.label-warning &nbsp; △ &nbsp;
+                      .label.label-warning &nbsp; △ &nbsp;
                     - elsif option_entry.OK?
                       .label.label-success &nbsp; ◯ &nbsp;
           tr
-            th.warning コメント
-            - @event.event_entries.each do |entry|
-              td = entry.comment
+            th.warning colspan="4" コメント
+            - @event.event_entries.order(:id).each do |event_entry|
+              td = event_entry.comment
         - if user_signed_in?
           = link_to title_entry, "#modal-area", data: { toggle: "modal" }, class: "btn btn-primary btn-lg"
         - else
@@ -71,7 +87,9 @@ javascript:
           #modal-dialog-errors
           p 日にち候補
           table.table.table-bordered.table-striped
-            - @event_entry.option_entries.each do |option_entry|
+            - @event.options.each.with_index(0 - @event.options.length) do |option, index|
+              - option_entry = OptionEntry.find_or_initialize_by(option: option, event_entry: @event_entry) do |option_entry|
+                - option_entry.attributes = { id: index, feeling: :Neither, option: option, event_entry: @event_entry }
               - radio_options_ng      = option_entry.NG?      ? { checked: true } : nil
               - radio_options_neither = option_entry.Neither? ? { checked: true } : nil
               - radio_options_ok      = option_entry.OK?      ? { checked: true } : nil
@@ -80,13 +98,13 @@ javascript:
                 td.warning width="30%" = option_entry.option.text
                 td
                   .btn-group data-toggle="buttons"
-                    label.btn.btn-lg.btn-success
+                    label.btn.btn-lg.btn-default
                       = radio_button_tag "event_entry[feelings][#{option_entry.id}][feeling]", OptionEntry.feelings[:NG], radio_options_ng
                       span 　Ｘ　
-                    label.btn.btn-lg.btn-success
+                    label.btn.btn-lg.btn-default
                       = radio_button_tag "event_entry[feelings][#{option_entry.id}][feeling]", OptionEntry.feelings[:Neither], radio_options_neither
                       span 　△　
-                    label.btn.btn-lg.btn-success
+                    label.btn.btn-lg.btn-default
                       = radio_button_tag "event_entry[feelings][#{option_entry.id}][feeling]", OptionEntry.feelings[:OK], radio_options_ok
                       span 　◯　
           div.form-group
