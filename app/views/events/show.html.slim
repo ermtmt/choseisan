@@ -8,73 +8,70 @@ javascript:
 
 .page-header
   h3 = @event.title
-  div 回答数：#{@event.event_entries.count}
+  span.label.label-primary 作成者：&nbsp;#{@event.owner.name}
+  span &emsp;
+  span.label.label-success 回答数：&nbsp;#{@event.event_entries.count}
 .row
-  .col-md-8
+  .panel.panel-success
+    .panel-heading メモ
+    .panel-body = simple_format h @event.memo
+  .panel.panel-success
+    .panel-heading 日にち候補
+    .panel-body
+      table.table.table-bordered.table-hover
+        tr.warning
+          th.text-center width="15%" 日程
+          th.text-center width="5%" ◯
+          th.text-center width="5%" △
+          th.text-center width="5%" Ｘ
+          - @event.event_entries.order(:id).each do |event_entry|
+            th.text-center = event_entry.user.name
+        - @event.options.each do |option|
+          - option.calc_option_entry
+          - if option.rate == 100
+            - line_color = "#68D973"
+          - elsif option.rate == 0
+            - line_color = "#ffffff"
+          - else
+            - line_color = "#D5EBD7"
+          tr bgcolor="#{line_color}"
+            td = option.text
+            td.text-center = option.count_ok
+            td.text-center = option.count_neither
+            td.text-center = option.count_ng
+            - @event.event_entries.order(:id).each do |event_entry|
+              - option_entry = OptionEntry.find_by(option: option, event_entry: event_entry)
+              - if option_entry.blank?
+                td
+              - else
+                td.text-center style="font-size: 1.5em;"
+                  - if option_entry.NG?
+                    .label.label-danger &nbsp; Ｘ &nbsp;
+                  - elsif option_entry.Neither?
+                    .label.label-warning &nbsp; △ &nbsp;
+                  - elsif option_entry.OK?
+                    .label.label-success &nbsp; ◯ &nbsp;
+        tr
+          th.warning colspan="4" コメント
+          - @event.event_entries.order(:id).each do |event_entry|
+            td = event_entry.comment
+      / この画面はログインせずにアクセス可能
+      - if user_signed_in?
+        = link_to title_entry, "#modal-area", data: { toggle: "modal" }, class: "btn btn-primary btn-lg"
+      - else
+        = link_to title_entry, event_entry_path(@event), method: :post, class: "btn btn-primary btn-lg"
+  .panel.panel-success
+    .panel-heading このイベントのURL
+    .panel-body = text_field_tag "event-url", "#{request.url}", readonly: true, onclick: "this.select();", class: "form-control"
+  - if @event.owner?
     .panel.panel-success
-      .panel-heading 主催者
-      .panel-body #{@event.owner.name} さん
-    .panel.panel-success
-      .panel-heading メモ
-      .panel-body = simple_format h @event.memo
-    .panel.panel-success
-      .panel-heading このイベントのURL
-      .panel-body = text_field_tag "event-url", "#{request.url}", readonly: true, onclick: "this.select();", class: "form-control"
-  .col-md-4
-    / この画面はログインせずにアクセス可能
-    - if user_signed_in?
-      = link_to "イベント一覧へ", events_path, class: "btn btn-default btn-lg btn-block"
-      - if @event.owner?
-        hr
-        = link_to "イベントの再編集", edit_event_path(@event), class: "btn btn-success btn-lg btn-block"
-        = link_to "イベントを削除する", event_path(@event), method: :delete,
-          data: { confirm: "削除してもよろしいですか？", toggle: "popover", trigger: "hover", placement: "left", title: "注意！", content: "一度削除すると復旧はできません。" },
-          id: "btn-event-delete", class: "btn btn-danger btn-lg btn-block"
-  .col-md-12
-    .panel.panel-success
-      .panel-heading 日にち候補
+      .panel-heading イベント情報の変更
       .panel-body
-        table.table.table-bordered.table-hover
-          tr.warning
-            th.text-center width="15%" 日程
-            th.text-center width="5%" ◯
-            th.text-center width="5%" △
-            th.text-center width="5%" Ｘ
-            - @event.event_entries.order(:id).each do |event_entry|
-              th.text-center = event_entry.user.name
-          - @event.options.each do |option|
-            - option.calc_option_entry
-            - if option.rate == 100
-              - line_color = "#68D973"
-            - elsif option.rate == 0
-              - line_color = "#ffffff"
-            - else
-              - line_color = "#D5EBD7"
-            tr bgcolor="#{line_color}"
-              td = option.text
-              td.text-center = option.count_ok
-              td.text-center = option.count_neither
-              td.text-center = option.count_ng
-              - @event.event_entries.order(:id).each do |event_entry|
-                - option_entry = OptionEntry.find_by(option: option, event_entry: event_entry)
-                - if option_entry.blank?
-                  td
-                - else
-                  td.text-center style="font-size: 1.5em;"
-                    - if option_entry.NG?
-                      .label.label-danger &nbsp; Ｘ &nbsp;
-                    - elsif option_entry.Neither?
-                      .label.label-warning &nbsp; △ &nbsp;
-                    - elsif option_entry.OK?
-                      .label.label-success &nbsp; ◯ &nbsp;
-          tr
-            th.warning colspan="4" コメント
-            - @event.event_entries.order(:id).each do |event_entry|
-              td = event_entry.comment
-        - if user_signed_in?
-          = link_to title_entry, "#modal-area", data: { toggle: "modal" }, class: "btn btn-primary btn-lg"
-        - else
-          = link_to title_entry, event_entry_path(@event), method: :post, class: "btn btn-primary btn-lg"
+        = link_to "イベントの再編集", edit_event_path(@event), class: "btn btn-success btn-lg"
+        span &emsp;
+        = link_to "イベントを削除する", event_path(@event), method: :delete,
+          data: { confirm: "削除してもよろしいですか？", toggle: "popover", trigger: "hover", placement: "top", title: "注意！", content: "一度削除すると復旧はできません。" },
+          id: "btn-event-delete", class: "btn btn-danger btn-lg"
 
 #modal-area.modal.fade
   .modal-dialog

@@ -52,7 +52,7 @@ class EventsController < ApplicationController
 
     def set_event_entry
       @event_entry = EventEntry.find_or_initialize_by(event_id: @event, user_id: current_user) do |event_entry|
-        event_entry.attributes = { event: self, user: user }
+        event_entry.attributes = { event: @event, user: current_user }
       end
     end
 

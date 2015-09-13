@@ -10,10 +10,15 @@
   .form-inputs
     = f.input :title, maxlength: 50, required: false, input_html: { placeholder: ph_title } 
     = f.input :memo, input_html: { rows: 4, placeholder: ph_memo }
-    - if local_assigns[:type] == :new
+    - if @event.new_record?
       == render 'form_new', f: f
     - else
       == render 'form_edit', f: f
   .form-actions
     = f.button :submit, class: "btn btn-primary btn-lg"
+    span &emsp;
+    - if @event.new_record?
+      = link_to "キャンセル", events_path, class: "btn btn-default btn-lg"
+    - else
+      = link_to "キャンセル", event_path(@event.hash_id), class: "btn btn-default btn-lg"
 

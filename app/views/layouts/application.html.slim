@@ -11,15 +11,20 @@ html
     header.navbar.navbar-default
       .container
         .navbar-header
-          = link_to "俺の調整さん", root_path, class: "navbar-brand"
-        ul.nav.navbar-nav.navbar-right
-          - if user_signed_in?
-            li = link_to "俺のイベント管理", events_path, class: "navbar-link"
-            li = link_to "#{current_user.name} さん", edit_user_registration_path, class: "navbar-link"
-            li = link_to "ログアウト", destroy_user_session_path, method: :delete, class: "navbar-link"
-          - else
-            li = link_to "サインアップ", new_user_registration_path, class: "navbar-link"
-            li = link_to "ログイン", new_user_session_path, class: "navbar-link"
+          button.navbar-toggle type="button" data-toggle="collapse" data-target="#navbar-menu"
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          = link_to "俺の調整さん", top_path, class: "navbar-brand"
+        div#navbar-menu.collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-right
+            - if user_signed_in?
+              li = link_to "#{current_user.name} さん", edit_user_registration_path, class: "navbar-link"
+              li = link_to "ログアウト", destroy_user_session_path, method: :delete, class: "navbar-link"
+            - else
+              li = link_to "ログイン", new_user_session_path, class: "navbar-link"
+              li = link_to "サインアップ", new_user_registration_path, class: "navbar-link"
+
     .container
       - if notice
         p.alert.alert-success = notice

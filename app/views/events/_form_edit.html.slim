@@ -1,23 +1,20 @@
-- title_options = "候補日程"
-- title_options_addition = "これらの末尾に以下の日程を追加する"
-- tooltip_delete_options = "チェックするとこの候補を削除します"
 - ph_options_text = "例：&#13;&#10;4/1(月) 19:00〜&#13;&#10;4/2(火) 20:00〜&#13;&#10;4/3(水) 21:00〜".html_safe
 
 javascript:
   $(function() {
     $("label[for^=event_options_deletes]").popover({
-      trigger: "hover", placement: "right", content: "#{tooltip_delete_options}"
+      trigger: "hover", placement: "right", content: "チェックするとこの候補を削除します"
     });
   });
 
 = f.input :options_deletes, as: :check_boxes,
-  label: title_options,
+  label: "候補日程",
   collection: @event.options,
   value_method: :id,
   label_method: :text
 div style="padding-left: 1em;"
   = f.input :options_text, as: :text,
-    label: title_options_addition,
+    label: "これらの末尾に以下の日程を追加する",
     required: false,
     label_html: { style: "font-weight: normal; font-size: 90%;" },
     input_html: { rows: 5, placeholder: ph_options_text }
