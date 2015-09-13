@@ -33,3 +33,7 @@ group :development, :test do
   gem 'bullet'             # mtmt add
 end
 
+group :production do
+  gem 'rails_12factor'
+end
+
