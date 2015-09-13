@@ -9,4 +9,15 @@ class OptionEntry < ActiveRecord::Base
   scope :feeling_groups, ->(option_id) {
     where(option_id: option_id).group(:feeling).order(feeling: :asc).count
   }
+
+  def self.option_entries(options, event_entry)
+    option_entries = []
+    options.each.with_index(0 - options.length) do |option, index|
+      option_entry = OptionEntry.find_or_initialize_by(option: option, event_entry: event_entry) do |option_entry|
+        option_entry.attributes = { id: index, feeling: :Neither, option: option, event_entry: event_entry }
+      end
+      option_entries << option_entry
+    end
+    option_entries
+  end
 end

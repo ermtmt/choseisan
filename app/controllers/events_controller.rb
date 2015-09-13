@@ -3,6 +3,7 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show]
   before_action :set_my_event, only: [:edit, :update, :destroy]
   before_action :set_event_entry, only: [:show]
+  before_action :set_option_entries, only: [:show]
 
   def index
     @events = Event.related_events(current_user).page(params[:page])
@@ -50,7 +51,13 @@ class EventsController < ApplicationController
     end
 
     def set_event_entry
-      @event_entry = @event.event_entry(current_user)
+      @event_entry = EventEntry.find_or_initialize_by(event_id: @event, user_id: current_user) do |event_entry|
+        event_entry.attributes = { event: self, user: user }
+      end
+    end
+
+    def set_option_entries
+      @option_entries = OptionEntry.option_entries(@event.options, @event_entry)
     end
 
     def event_params

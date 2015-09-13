@@ -87,9 +87,7 @@ javascript:
           #modal-dialog-errors
           p 日にち候補
           table.table.table-bordered.table-striped
-            - @event.options.each.with_index(0 - @event.options.length) do |option, index|
-              - option_entry = OptionEntry.find_or_initialize_by(option: option, event_entry: @event_entry) do |option_entry|
-                - option_entry.attributes = { id: index, feeling: :Neither, option: option, event_entry: @event_entry }
+            - @option_entries.each do |option_entry|
               - radio_options_ng      = option_entry.NG?      ? { checked: true } : nil
               - radio_options_neither = option_entry.Neither? ? { checked: true } : nil
               - radio_options_ok      = option_entry.OK?      ? { checked: true } : nil

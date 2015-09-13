@@ -18,17 +18,6 @@ class Event < ActiveRecord::Base
       .where(Event.arel_table[:user_id].eq(user).or(EventEntry.arel_table[:user_id].eq(user)))
   }
 
-  def event_entry(user)
-    EventEntry.find_or_initialize_by(event_id: self, user_id: user) do |event_entry|
-      event_entry.attributes = { event: self, user: user }
-      self.options.each_with_index do |option, index|
-        option_entry = option.option_entries.build
-        option_entry.attributes = { id: index, feeling: :NG, option: option, event_entry: event_entry }
-        event_entry.option_entries << option_entry
-      end
-    end
-  end
-
   private
     def validates_create
       if self.options_text.blank?
