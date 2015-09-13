@@ -24,7 +24,7 @@ javascript:
           th.text-center width="5%" ◯
           th.text-center width="5%" △
           th.text-center width="5%" Ｘ
-          - @event.event_entries.order(:id).each do |event_entry|
+          - @event.event_entries.includes(:user).order(:id).each do |event_entry|
             th.text-center = event_entry.user.name
         - @event.options.each do |option|
           - option.calc_option_entry

@@ -30,5 +30,6 @@ group :development, :test do
   gem 'binding_of_caller'  # mtmt add
   gem 'quiet_assets'       # mtmt add
   gem 'rails-erd'          # mtmt add
+  gem 'bullet'             # mtmt add
 end
 
