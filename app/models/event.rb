@@ -9,6 +9,8 @@ class Event < ActiveRecord::Base
   has_many :options, foreign_key: :event_id, dependent: :destroy
   has_many :event_entries, foreign_key: :event_id, dependent: :destroy
   has_many :entry_users, through: :event_entries, source: :user
+  has_many :taggings, foreign_key: :event_id, dependent: :destroy
+  has_many :tags, through: :taggings, source: :tag
 
   attr_accessor :options_text
   attr_accessor :options_deletes

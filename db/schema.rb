@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150829231844) do
+ActiveRecord::Schema.define(version: 20150917131210) do
 
   create_table "event_entries", force: :cascade do |t|
     t.integer  "event_id",   limit: 4,   null: false
@@ -59,6 +59,28 @@ ActiveRecord::Schema.define(version: 20150829231844) do
 
   add_index "options", ["event_id"], name: "index_options_on_event_id", using: :btree
 
+  create_table "taggings", force: :cascade do |t|
+    t.integer  "event_id",   limit: 4, null: false
+    t.integer  "tag_id",     limit: 4, null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "taggings", ["event_id", "tag_id"], name: "index_taggings_on_event_id_and_tag_id", unique: true, using: :btree
+  add_index "taggings", ["event_id"], name: "index_taggings_on_event_id", using: :btree
+  add_index "taggings", ["tag_id", "event_id"], name: "index_taggings_on_tag_id_and_event_id", unique: true, using: :btree
+  add_index "taggings", ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "label",      limit: 255,             null: false
+    t.integer  "color",      limit: 4,   default: 0, null: false
+    t.integer  "user_id",    limit: 4,               null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  add_index "tags", ["user_id"], name: "index_tags_on_user_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "login_id",           limit: 255, default: "", null: false
     t.string   "encrypted_password", limit: 255, default: "", null: false
@@ -74,4 +96,7 @@ ActiveRecord::Schema.define(version: 20150829231844) do
   add_foreign_key "option_entries", "event_entries"
   add_foreign_key "option_entries", "options"
   add_foreign_key "options", "events"
+  add_foreign_key "taggings", "events"
+  add_foreign_key "taggings", "tags"
+  add_foreign_key "tags", "users"
 end

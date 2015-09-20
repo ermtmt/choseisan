@@ -1,0 +1,12 @@
+p#notice = notice
+
+p
+  strong Label:
+  = @tag.label
+p
+  strong Color:
+  = @tag.color
+
+= link_to 'Edit', edit_tag_path(@tag)
+'|
+= link_to 'Back', tags_path

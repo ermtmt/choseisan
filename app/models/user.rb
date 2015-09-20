@@ -16,5 +16,6 @@ class User < ActiveRecord::Base
 
   has_many :created_events, class_name: 'Event', foreign_key: :user_id
   has_many :event_entries, foreign_key: :event_id, dependent: :destroy
+  has_many :tags, foreign_key: :user_id, dependent: :destroy
 end
 
