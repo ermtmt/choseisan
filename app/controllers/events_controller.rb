@@ -6,7 +6,7 @@ class EventsController < ApplicationController
   before_action :set_option_entries, only: [:show]
 
   def index
-    @events = Event.related_events(current_user).page(params[:page])
+    @events = Event.related_events(current_user).order(id: :desc).page(params[:page])
   end
 
   def show
