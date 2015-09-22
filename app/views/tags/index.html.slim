@@ -1,5 +1,6 @@
 .page-header
   h3 タグ一覧
+  div #{Settings.max_count.tags}つまで作成できます。
 .row
   .col-md-8
     .list-group
@@ -9,6 +10,6 @@
           h4.list-group-item-heading.tag-list
             span.label.glyphicon.glyphicon-tag.tag-list class="#{label_class}" &emsp;#{tag.label}&emsp;
   .col-md-4
-    - if @tags.length < 3
+    - if @tags.length < Settings.max_count.tags
       = link_to "新しいタグを作る", new_tag_path, class: "btn btn-primary btn-lg btn-block"
 

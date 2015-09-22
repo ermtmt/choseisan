@@ -1,5 +1,6 @@
 class TagsController < ApplicationController
   before_action :set_tag, only: [:edit, :update, :destroy]
+  before_action :check_tag_count, only: [:new, :create]
 
   def index
     @tags = current_user.tags.all
@@ -45,5 +46,11 @@ class TagsController < ApplicationController
 
     def tag_params
       params.require(:tag).permit(:label, :color)
+    end
+
+    def check_tag_count
+      if current_user.tags.count >= Settings.max_count.tags
+        redirect_to tags_path, alert: "タグは#{Settings.max_count.tags}つまでしか作成できません。"
+      end
     end
 end
