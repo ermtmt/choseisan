@@ -43,10 +43,10 @@ scss:
           - option.calc_option_entry
           - if option.rate == 100
             - line_color = "#68D973"
-          - elsif option.rate == 0
-            - line_color = "#ffffff"
-          - else
+          - elsif option.rate >= 70
             - line_color = "#D5EBD7"
+          - else
+            - line_color = "#ffffff"
           tr bgcolor="#{line_color}"
             td = option.text
             td.text-center = option.count_ok
