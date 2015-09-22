@@ -1,9 +1,11 @@
 class EventsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show]
-  before_action :set_event, only: [:show]
+  before_action :set_event, only: [:show, :tagging]
   before_action :set_my_event, only: [:edit, :update, :destroy]
   before_action :set_event_entry, only: [:show]
   before_action :set_option_entries, only: [:show]
+  before_action :set_tag, only: [:tagging]
+  before_action :set_tagging, only: [:tagging]
 
   def index
     @events = Event.related_events(current_user).order(id: :desc).page(params[:page])
@@ -41,9 +43,18 @@ class EventsController < ApplicationController
     redirect_to events_url, notice: 'イベントを削除しました。'
   end
 
+  def tagging
+    if @tagging
+      @tagging.destroy
+    else
+      @tagging = Tagging.create(event: @event, tag: @tag)
+    end
+    render :tagging
+  end
+
   private
     def set_event
-      @event = Event.find_by!(hash_id: params[:id]) # ログインレスでもアクセス可能
+      @event = Event.find_by!(hash_id: params[:id])
     end
 
     def set_my_event
@@ -58,6 +69,14 @@ class EventsController < ApplicationController
 
     def set_option_entries
       @option_entries = OptionEntry.option_entries(@event.options, @event_entry)
+    end
+
+    def set_tag
+      @tag = Tag.find(params[:tag_id])
+    end
+
+    def set_tagging
+      @tagging = Tagging.find_by(event: @event, tag: @tag)
     end
 
     def event_params

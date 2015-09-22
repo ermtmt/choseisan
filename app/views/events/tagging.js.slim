@@ -1,0 +1,4 @@
+- if @tagging.persisted?
+  | $("#tag-#{@tag.id}").addClass("active");
+- else
+  | $("#tag-#{@tag.id}").removeClass("active").removeClass("focus");

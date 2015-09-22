@@ -1,8 +1,13 @@
-javascript:
-  $(function() {
-    $("#btn-event-delete").popover();
+coffee:
+  $ ->
+    $("#btn-event-delete").popover()
     $(":radio[id^=event_entry]:checked").parent("label").addClass("active")
-  });
+scss:
+  .btn-nonfocus:focus,
+  .btn-nonfocus:hover {
+    background-color: #ffffff;
+    outline: none;
+  }
 
 - title_entry = @event.entered? ? "出欠を変更する" : "出欠を入力する"
 
@@ -12,6 +17,14 @@ javascript:
   span &emsp;
   span.label.label-success 回答数：&nbsp;#{@event.event_entries.count}
 .row
+  - if current_user.tags.present?
+    p.text-right data-toggle="buttons"
+      - current_user.tags.each do |tag|
+        - label_class = "label-" << color_alias(tag[:color])
+        - btn_active = (@event.taggings.find_by(tag: tag)) ? "active" : ""
+        = link_to tagging_event_path(tag_id: tag.id),
+          { method: :patch, remote: true, id: "tag-#{tag.id}", class: "btn btn-default btn-nonfocus #{btn_active}" } do
+          span.label.glyphicon.glyphicon-tag class="#{label_class}" &thinsp;#{tag.label}&thinsp;
   .panel.panel-success
     .panel-heading メモ
     .panel-body = simple_format h @event.memo
