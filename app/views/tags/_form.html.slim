@@ -1,9 +1,35 @@
+javascript:
+  $(function() {
+    $(":radio[id^=tag_color]:checked").parent("label").addClass("active")
+  });
+
+- ph_label = "（10文字以内・必須）　「未開催」・「重要」　など"
+
 = simple_form_for(@tag) do |f|
-  = f.error_notification
-
+  - if @tag.errors.any?
+    .alert.alert-danger
+      ul
+        - @tag.errors.full_messages.each do |msg|
+          li = msg
   .form-inputs
-    = f.input :label
-    = f.input :color
-
+    = f.input :label, maxlength: 10, required: false, input_html: { placeholder: ph_label }
+    .form-group
+      = f.label :color, required: false, class: "control-label"
+      br
+      .btn-group data-toggle="buttons"
+        = f.collection_radio_buttons :color, Tag.colors, :last, :first, { checked: @tag[:color], boolean_style: :inline, item_wrapper_tag: false } do |b|
+          - label_class = "label-" << color_alias(b.value)
+          = b.label(class: "btn btn-lg btn-default") do
+            = b.radio_button
+            span.label.glyphicon.glyphicon-tag class="#{label_class}" &thinsp;
+  br
   .form-actions
-    = f.button :submit
+    = f.button :submit, class: "btn btn-primary btn-lg"
+    -if @tag.persisted?
+      span &emsp;
+      = link_to "削除する", tag_path(@tag), method: :delete,
+        data: { confirm: "削除してもよろしいですか？" },
+        class: "btn btn-danger btn-lg"
+    span &emsp;
+    = link_to "キャンセル", tags_path, class: "btn btn-default btn-lg"
+

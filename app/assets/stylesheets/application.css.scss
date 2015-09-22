@@ -1,6 +1,3 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
-/*
- *= require_tree .
- *= require_self
- */
+@import "main.css.scss";

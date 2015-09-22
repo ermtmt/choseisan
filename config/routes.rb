@@ -5,6 +5,6 @@ Rails.application.routes.draw do
   resources :events do
     resource :entry, controller: :event_entry, only: [:create, :update, :destroy]
   end
-  resources :tags
+  resources :tags, except: [:show]
 end
 

@@ -16,4 +16,7 @@ ja:
         options_text: 候補日程
       event_entry:
         comment: コメント
+      tag:
+        label: 名前
+        color: 色
 

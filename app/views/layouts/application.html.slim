@@ -20,6 +20,7 @@ html
           ul.nav.navbar-nav.navbar-right
             - if user_signed_in?
               li = link_to "#{current_user.name} さん", edit_user_registration_path, class: "navbar-link"
+              li = link_to "俺のタグ", tags_path, class: "navbar-link"
               li = link_to "ログアウト", destroy_user_session_path, method: :delete, class: "navbar-link"
             - else
               li = link_to "ログイン", new_user_session_path, class: "navbar-link"

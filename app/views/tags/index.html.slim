@@ -1,23 +1,14 @@
-h1 Listing tags
+.page-header
+  h3 タグ一覧
+.row
+  .col-md-8
+    .list-group
+      - @tags.each do |tag|
+        - label_class = "label-" << color_alias(tag[:color])
+        = link_to edit_tag_path(tag), class: "list-group-item"
+          h4.list-group-item-heading.tag-list
+            span.label.glyphicon.glyphicon-tag.tag-list class="#{label_class}" &emsp;#{tag.label}&emsp;
+  .col-md-4
+    - if @tags.length < 3
+      = link_to "新しいタグを作る", new_tag_path, class: "btn btn-primary btn-lg btn-block"
 
-table
-  thead
-    tr
-      th Label
-      th Color
-      th
-      th
-      th
-
-  tbody
-    - @tags.each do |tag|
-      tr
-        td = tag.label
-        td = tag.color
-        td = link_to 'Show', tag
-        td = link_to 'Edit', edit_tag_path(tag)
-        td = link_to 'Destroy', tag, data: {:confirm => 'Are you sure?'}, :method => :delete
-
-br
-
-= link_to 'New Tag', new_tag_path
