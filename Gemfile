@@ -17,6 +17,7 @@ gem 'active_decorator'    # mtmt add
 gem 'kaminari'            # mtmt add
 gem 'kaminari-bootstrap'  # mtmt add
 gem 'activerecord-import' # mtmt add
+gem 'config'              # mtmt add
 
 group :development, :test do
   gem 'byebug'
