@@ -1,2 +1,3 @@
 max_count:
   tags: 3
+paginate_count: 5
