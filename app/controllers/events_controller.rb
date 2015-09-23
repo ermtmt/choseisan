@@ -50,7 +50,6 @@ class EventsController < ApplicationController
     else
       @tagging = Tagging.create(event: @event, tag: @tag)
     end
-    render :tagging
   end
 
   private
@@ -77,7 +76,7 @@ class EventsController < ApplicationController
     end
 
     def set_tagging
-      @tagging = Tagging.find_by(event: @event, tag: @tag)
+      @tagging = @event.taggings.find_by(tag: @tag)
     end
 
     def event_params
