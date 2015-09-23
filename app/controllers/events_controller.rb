@@ -10,7 +10,7 @@ class EventsController < ApplicationController
   before_action :check_created_events_count, only: [:new, :create]
 
   def index
-    @events = Event.related_events(current_user, @filter_tags).order(id: :desc).page(params[:page])
+    @events = Event.filter_events(current_user, @filter_tags).order(id: :desc).page(params[:page])
   end
 
   def show
