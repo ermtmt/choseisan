@@ -1,3 +1,4 @@
 max_count:
+  events: 20
   tags: 3
 paginate_count: 5

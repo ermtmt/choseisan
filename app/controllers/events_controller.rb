@@ -6,6 +6,7 @@ class EventsController < ApplicationController
   before_action :set_option_entries, only: [:show]
   before_action :set_tag, only: [:tagging]
   before_action :set_tagging, only: [:tagging]
+  before_action :check_created_events_count, only: [:new, :create]
 
   def index
     @events = Event.related_events(current_user).order(id: :desc).page(params[:page])
@@ -81,5 +82,11 @@ class EventsController < ApplicationController
 
     def event_params
       params.require(:event).permit(:title, :memo, :options_text, options_deletes: [])
+    end
+
+    def check_created_events_count
+      if current_user.created_events.count >= Settings.max_count.events
+        redirect_to events_path, alert: "イベントは#{Settings.max_count.events}個までしか作成できません。"
+      end
     end
 end

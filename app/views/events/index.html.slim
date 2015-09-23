@@ -1,3 +1,7 @@
+coffee:
+  $ ->
+    $("#btn-event-create").popover()
+
 .page-header
   h3 イベント一覧
 .row
@@ -13,5 +17,8 @@
               span.label.glyphicon.glyphicon-tag class="#{label_class}" &thinsp;#{tag.label}
       = paginate @events
   .col-md-4
-    = link_to "出欠表をつくる", new_event_path, class: "btn btn-primary btn-lg btn-block"
+    - if current_user.created_events.count < Settings.max_count.events
+      = link_to "出欠表をつくる", new_event_path,
+        id: "btn-event-create", class: "btn btn-primary btn-lg btn-block",
+        data: { toggle: "popover", trigger: "hover", placement: "top", content: "最大#{Settings.max_count.events}個まで" }
 
