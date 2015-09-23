@@ -1,11 +1,10 @@
-- ph_options_text = "例：&#13;&#10;4/1(月) 19:00〜&#13;&#10;4/2(火) 20:00〜&#13;&#10;4/3(水) 21:00〜".html_safe
-
-javascript:
-  $(function() {
+coffee:
+  $ ->
     $("label[for^=event_options_deletes]").popover({
       trigger: "hover", placement: "right", content: "チェックするとこの候補を削除します"
-    });
-  });
+    })
+
+- ph_options_text = "例：&#13;&#10;4/1(月) 19:00〜&#13;&#10;4/2(火) 20:00〜&#13;&#10;4/3(水) 21:00〜".html_safe
 
 = f.input :options_deletes, as: :check_boxes,
   label: "候補日程",
