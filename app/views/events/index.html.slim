@@ -7,15 +7,16 @@ coffee:
   h3 = link_to "イベント一覧", reset_events_path, style: "text-decoration: none;"
 .row
   .col-md-8
-    .well
-      - current_user.tags.each do |tag|
-        - label_class = "label-" << color_alias(tag[:color])
-        - btn_active = (@filter_tags.include?(tag.id)) ? "active" : ""
-        - pop_message = (btn_active.blank?) ? "#{tag.label}でフィルターします" : "#{tag.label}のフィルターを外します"
-        = link_to filter_events_path(tag_id: tag.id),
-          method: :post, id: "tag-#{tag.id}", class: "btn btn-default #{btn_active}",
-          data: { toggle: "popover", trigger: "hover", placement: "top", content: pop_message } do
-          span.label.glyphicon.glyphicon-tag class="#{label_class}" &thinsp;#{tag.label}&thinsp;
+    - if current_user.tags.present?
+      .well
+        - current_user.tags.each do |tag|
+          - label_class = "label-" << color_alias(tag[:color])
+          - btn_active = (@filter_tags.include?(tag.id)) ? "active" : ""
+          - pop_message = (btn_active.blank?) ? "#{tag.label}でフィルターします" : "#{tag.label}のフィルターを外します"
+          = link_to filter_events_path(tag_id: tag.id),
+            method: :post, id: "tag-#{tag.id}", class: "btn btn-default #{btn_active}",
+            data: { toggle: "popover", trigger: "hover", placement: "top", content: pop_message } do
+            span.label.glyphicon.glyphicon-tag class="#{label_class}" &thinsp;#{tag.label}&thinsp;
     .list-group
       - @events.each do |event|
         = link_to event_path(event.hash_id), class: "list-group-item"
