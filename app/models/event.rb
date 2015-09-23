@@ -15,9 +15,12 @@ class Event < ActiveRecord::Base
   attr_accessor :options_text
   attr_accessor :options_deletes
 
-  scope :related_events, ->(user) {
-    eager_load(:event_entries)
-      .where(Event.arel_table[:user_id].eq(user).or(EventEntry.arel_table[:user_id].eq(user)))
+  scope :related_events, ->(user, tag_ids) {
+    condition = Event.arel_table[:user_id].eq(user).or(EventEntry.arel_table[:user_id].eq(user))
+    if tag_ids.present?
+      condition = condition.and(Tag.arel_table[:id].in(tag_ids))
+    end
+    eager_load(:event_entries, :tags).where(condition)
   }
 
   private

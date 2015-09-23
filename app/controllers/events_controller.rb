@@ -6,10 +6,11 @@ class EventsController < ApplicationController
   before_action :set_option_entries, only: [:show]
   before_action :set_tag, only: [:tagging]
   before_action :set_tagging, only: [:tagging]
+  before_action :set_filter_tags, only: [:index, :filter]
   before_action :check_created_events_count, only: [:new, :create]
 
   def index
-    @events = Event.related_events(current_user).order(id: :desc).page(params[:page])
+    @events = Event.related_events(current_user, @filter_tags).order(id: :desc).page(params[:page])
   end
 
   def show
@@ -41,7 +42,23 @@ class EventsController < ApplicationController
 
   def destroy
     @event.destroy
-    redirect_to events_url, notice: 'イベントを削除しました。'
+    redirect_to events_path, notice: 'イベントを削除しました。'
+  end
+
+  def reset
+    session[:filter_tags] = nil
+    redirect_to events_path
+  end
+
+  def filter
+    tag_id = params[:tag_id].to_i
+    if @filter_tags.include?(tag_id)
+      @filter_tags.delete(tag_id)
+    else
+      @filter_tags << tag_id
+    end
+    session[:filter_tags] = @filter_tags
+    redirect_to events_path
   end
 
   def tagging
@@ -77,6 +94,10 @@ class EventsController < ApplicationController
 
     def set_tagging
       @tagging = @event.taggings.find_by(tag: @tag)
+    end
+
+    def set_filter_tags
+      @filter_tags = session[:filter_tags] || []
     end
 
     def event_params

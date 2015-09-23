@@ -6,6 +6,7 @@ class HomeController < ApplicationController
 
   def top
     if user_signed_in?
+      session[:filter_tags] = nil
       redirect_to events_path
     else
       redirect_to root_path
