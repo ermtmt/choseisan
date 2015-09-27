@@ -3,7 +3,7 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :tagging]
   before_action :set_my_event, only: [:edit, :update, :destroy]
   before_action :set_event_entry, only: [:show]
-  before_action :set_option_entries, only: [:show]
+  before_action :set_option_entries_selection, only: [:show]
   before_action :set_tag, only: [:tagging]
   before_action :set_tagging, only: [:tagging]
   before_action :set_filter_tags, only: [:index, :filter]
@@ -88,8 +88,8 @@ class EventsController < ApplicationController
       end
     end
 
-    def set_option_entries
-      @option_entries = OptionEntry.option_entries(@event.options, @event_entry)
+    def set_option_entries_selection
+      @option_entries_selection = OptionEntry.option_entries_selection(@event.options, @event_entry)
     end
 
     def set_tag
