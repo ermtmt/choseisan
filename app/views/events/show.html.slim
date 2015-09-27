@@ -37,7 +37,7 @@ scss:
           th.text-center width="5%" ◯
           th.text-center width="5%" △
           th.text-center width="5%" Ｘ
-          - @event.event_entries.includes(:user).order(:id).each do |event_entry|
+          - @event.event_entries.each do |event_entry|
             th.text-center = event_entry.user.name
         - @event.options.each do |option|
           - option.calc_option_entry
@@ -52,8 +52,8 @@ scss:
             td.text-center = option.count_ok
             td.text-center = option.count_neither
             td.text-center = option.count_ng
-            - @event.event_entries.order(:id).each do |event_entry|
-              - option_entry = OptionEntry.find_by(option: option, event_entry: event_entry)
+            - @event.event_entries.each do |event_entry|
+              - option_entry = event_entry.option_entries.find_by(option: option)
               - if option_entry.blank?
                 td
               - else
@@ -66,7 +66,7 @@ scss:
                     .label.label-success &nbsp; ◯ &nbsp;
         tr
           th.warning colspan="4" コメント
-          - @event.event_entries.order(:id).each do |event_entry|
+          - @event.event_entries.each do |event_entry|
             td = event_entry.comment
       / この画面はログインせずにアクセス可能
       - if user_signed_in?

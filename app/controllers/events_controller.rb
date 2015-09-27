@@ -14,6 +14,7 @@ class EventsController < ApplicationController
   end
 
   def show
+    @event.event_entries = @event.event_entries.eager_load(:user).order(id: :asc)
   end
 
   def new
