@@ -1,8 +1,0 @@
-messages = $("<div></div>").addClass("alert").addClass("alert-danger");
-messages.append("<ul></ul>");
-<% @event_entry.errors.full_messages.each do |message| %>
-  line = $("<li></li>").text("<%= message %>");
-  messages.append(line);
-<% end %>
-$("#modal-dialog-errors").html(messages);
-
