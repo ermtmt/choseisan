@@ -10,7 +10,7 @@ class EventService
         raise ActiveRecord::Rollback
       end
 
-      # Options
+      # Option
       unless self.add_options(event, params[:options_text])
         status = false
         raise ActiveRecord::Rollback
@@ -18,26 +18,42 @@ class EventService
     end
     return status
   end
-  
+
   def self.bulk_update(event, params)
     raise TypeError unless event.is_a?(Event) || params.is_a?(Hash)
     status = true
     ActiveRecord::Base.transaction do
-      # Event
       event.lock!
+
+      # Event
       event.attributes = params.slice(:title, :memo, :options_deletes, :options_text)
       unless event.save
         status = false
         raise ActiveRecord::Rollback
       end
 
-      # Options
+      # Option
       unless Option.destroy(params[:options_deletes].reject(&:blank?))
         event.errors[:base] << "候補日程の削除に失敗しました"
         status = false
         raise ActiveRecord::Rollback
       end
       unless self.add_options(event, params[:options_text])
+        status = false
+        raise ActiveRecord::Rollback
+      end
+    end
+    return status
+  end
+
+  def self.bulk_delete(event)
+    raise TypeError unless event.is_a?(Event)
+    status = true
+    ActiveRecord::Base.transaction do
+      event.lock!
+
+      # Event & Option
+      unless event.destroy
         status = false
         raise ActiveRecord::Rollback
       end
