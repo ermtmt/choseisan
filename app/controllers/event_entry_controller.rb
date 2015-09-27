@@ -1,7 +1,7 @@
 class EventEntryController < ApplicationController
   before_action :set_event
   before_action :set_event_entry, only: [:update, :destroy]
-  
+
   def create
     @event_entry = @event.event_entries.build
     @event_entry.user = current_user
@@ -23,7 +23,7 @@ class EventEntryController < ApplicationController
  end
 
   def destroy
-    if @event_entry.destroy
+    if EventEntryService.bulk_delete(@event_entry)
       flash[:notice] = "出欠を削除しました。"
       render js: "location.reload()"
     else

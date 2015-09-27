@@ -3,6 +3,8 @@ class EventEntryService
     raise TypeError unless event_entry.is_a?(EventEntry) || params.is_a?(Hash)
     status = true
     ActiveRecord::Base.transaction do
+      event_entry.event.lock!
+
       # EventEntry
       event_entry.attributes = { comment: params[:comment] }
       unless event_entry.save
@@ -32,7 +34,7 @@ class EventEntryService
     raise TypeError unless event_entry.is_a?(EventEntry) || params.is_a?(Hash)
     status = true
     ActiveRecord::Base.transaction do
-      event_entry.lock!
+      event_entry.event.lock!
 
       # EventEntry
       unless event_entry.update(comment: params[:comment])
@@ -53,6 +55,21 @@ class EventEntryService
           raise ActiveRecord::Rollback
         end
         option_entry.save
+      end
+    end
+    status
+  end
+
+  def self.bulk_delete(event_entry)
+    raise TypeError unless event_entry.is_a?(EventEntry)
+    status = true
+    ActiveRecord::Base.transaction do
+      event_entry.event.lock!
+
+      # EventEntry & OptionEntry
+      unless event_entry.destroy
+        status = false
+        raise ActiveRecord::Rollback
       end
     end
     status
