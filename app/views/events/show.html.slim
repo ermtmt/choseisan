@@ -53,6 +53,7 @@ scss:
             td.text-center = option.count_neither
             td.text-center = option.count_ng
             - @event.event_entries.each do |event_entry|
+              / 回答後に新たに候補日が追加された場合は、回答の中に新しい候補日の回答がまだ存在しないため、存在チェックが必要
               - option_entry = event_entry.option_entries.find_by(option: option)
               - if option_entry.blank?
                 td
