@@ -115,7 +115,7 @@ scss:
                     label.btn.btn-lg.btn-default
                       = radio_button_tag "event_entry[feelings][#{option_entry.id}][feeling]", OptionEntry.feelings[:OK], radio_options_ok
                       span 　◯　
-          div.form-group
+          .form-group
             = f.input :comment, maxlength: 50, class: "form-control"
         .modal-footer
           = f.button :submit, "保存", class: "btn btn-primary", data: { disable_with: "送信中..." }

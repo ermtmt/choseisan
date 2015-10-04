@@ -22,7 +22,7 @@ coffee:
         = link_to event_path(event.hash_id), class: "list-group-item"
           h4.list-group-item-heading = event.title
           p.list-group-item-text = event.memo.truncate(43)
-          div.text-right
+          .text-right
             - event.tags.where(user: current_user).each do |tag|
               - label_class = "label-" << color_alias(tag[:color])
               span.label.glyphicon.glyphicon-tag class="#{label_class}" &thinsp;#{tag.label}
