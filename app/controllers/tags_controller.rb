@@ -14,9 +14,9 @@ class TagsController < ApplicationController
   end
 
   def create
-    @tag = current_user.tags.build
-    @tag.attributes = { label: tag_params[:label] }
-    @tag[:color] = tag_params[:color]
+    @tag = current_user.tags.build(tag_params) # collection_radio_buttons を修正してこれで動くようにしたい
+    # @tag.attributes = { label: tag_params[:label] }
+    # @tag[:color] = tag_params[:color]
     if @tag.save
       redirect_to tags_path, notice: 'タグを作成しました。'
     else
@@ -48,6 +48,7 @@ class TagsController < ApplicationController
       params.require(:tag).permit(:label, :color)
     end
 
+    # モデルのバリデーションに
     def check_tag_count
       if current_user.tags.count >= Settings.max_count.tags
         redirect_to tags_path, alert: "タグは#{Settings.max_count.tags}つまでしか作成できません。"

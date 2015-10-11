@@ -83,11 +83,13 @@ class EventsController < ApplicationController
     end
 
     def set_event_entry
+      # @event_entry = current_user.event_entries.find_or_initialize_by(event_id: @event) do |event_entry| # インスタンスから始めるように
       @event_entry = EventEntry.find_or_initialize_by(event_id: @event, user_id: current_user) do |event_entry|
         event_entry.attributes = { event: @event, user: current_user }
       end
     end
 
+    # view で使うものなので、 view で処理する
     def set_option_entries_selection
       @option_entries_selection = OptionEntry.option_entries_selection(@event.options, @event_entry)
     end
@@ -108,6 +110,7 @@ class EventsController < ApplicationController
       params.require(:event).permit(:title, :memo, :options_text, options_deletes: [])
     end
 
+    # eventのバリデーションで処理したい
     def check_created_events_count
       if current_user.created_events.count >= Settings.max_count.events
         redirect_to events_path, alert: "イベントは#{Settings.max_count.events}個までしか作成できません。"
