@@ -23,7 +23,13 @@ class Event < ActiveRecord::Base
       # タグ付けしたイベント
       condition = Tag.arel_table[:id].in(tag_ids)
     end
-    eager_load(:event_entries, :tags).where(condition)
+    where(condition)
+  }
+
+  scope :filter_tags, ->(tag_ids) {
+    if tag_ids.present?
+      where(tags: {id: tag_ids}).joins(:tags)
+    end
   }
 
   private

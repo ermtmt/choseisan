@@ -17,5 +17,8 @@ class User < ActiveRecord::Base
   has_many :created_events, class_name: 'Event', foreign_key: :user_id
   has_many :event_entries, foreign_key: :event_id, dependent: :destroy
   has_many :tags, foreign_key: :user_id, dependent: :destroy
-end
 
+  def related_events
+    Event.where(Event.arel_table[:user_id].eq(self).or(EventEntry.arel_table[:user_id].eq(self)))
+  end
+end

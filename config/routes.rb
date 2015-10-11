@@ -10,4 +10,3 @@ Rails.application.routes.draw do
   end
   resources :tags, except: [:show]
 end
-
