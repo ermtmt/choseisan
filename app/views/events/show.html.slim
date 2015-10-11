@@ -11,11 +11,13 @@ scss:
 
 - title_entry = @event.entered? ? "出欠を変更する" : "出欠を入力する"
 
+- event_entries = @event.event_entries.eager_load(:user, option_entries: :option).order(id: :asc)
+
 .page-header
   h3 = @event.title
   span.label.label-primary 作成者：&nbsp;#{@event.owner.name}
   span &emsp;
-  span.label.label-success 回答数：&nbsp;#{@event.event_entries.count}
+  span.label.label-success 回答数：&nbsp;#{event_entries.count}
 .row
   - if user_signed_in? && current_user.tags.present?
     p.text-right data-toggle="buttons"
@@ -37,7 +39,7 @@ scss:
           th.text-center width="5%" ◯
           th.text-center width="5%" △
           th.text-center width="5%" Ｘ
-          - @event.event_entries.each do |event_entry|
+          - event_entries.each do |event_entry|
             th.text-center = event_entry.user.name
         - @event.options.each do |option|
           - option.calc_option_entry
@@ -52,7 +54,7 @@ scss:
             td.text-center = option.count_ok
             td.text-center = option.count_neither
             td.text-center = option.count_ng
-            - @event.event_entries.each do |event_entry|
+            - event_entries.each do |event_entry|
               - option_entry = nil
               - event_entry.option_entries.each do |target_option_entry|
                 - option_entry = target_option_entry if target_option_entry.option == option
@@ -68,7 +70,7 @@ scss:
                     .label.label-success &nbsp; ◯ &nbsp;
         tr
           th.warning colspan="4" コメント
-          - @event.event_entries.each do |event_entry|
+          - event_entries.each do |event_entry|
             td = event_entry.comment
       / この画面はログインせずにアクセス可能
       - if user_signed_in?
@@ -126,4 +128,3 @@ scss:
             span  &emsp;|&emsp;
             = link_to "出欠の削除", event_entry_path(@event), method: :delete, remote: true,
               class: "btn btn-danger", data: { confirm: "削除してもよろしいですか？", disable_with: "送信中..." }
-
