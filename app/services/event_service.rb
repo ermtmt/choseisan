@@ -1,24 +1,4 @@
 class EventService
-  def self.bulk_insert(event, params)
-    raise TypeError unless event.is_a?(Event) || params.is_a?(Hash)
-    status = true
-    ActiveRecord::Base.transaction do
-      # Event
-      event.attributes = params.slice(:title, :memo, :options_text)
-      unless event.save
-        status = false
-        raise ActiveRecord::Rollback
-      end
-
-      # Option
-      unless self.add_options(event, params[:options_text])
-        status = false
-        raise ActiveRecord::Rollback
-      end
-    end
-    return status
-  end
-
   def self.bulk_update(event, params)
     raise TypeError unless event.is_a?(Event) || params.is_a?(Hash)
     status = true

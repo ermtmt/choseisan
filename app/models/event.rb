@@ -32,6 +32,15 @@ class Event < ActiveRecord::Base
     end
   }
 
+  before_validation :build_options_from_options_text
+  def build_options_from_options_text
+    if options_text.present?
+      options_text.each_line do |line|
+        self.options.build(text: line.strip)
+      end
+    end
+  end
+
   private
     def validates_create
       if self.options_text.blank?

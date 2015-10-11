@@ -25,8 +25,8 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = current_user.created_events.build
-    if EventService.bulk_insert(@event, event_params)
+    @event = current_user.created_events.build(event_params)
+    if @event.save
       redirect_to event_path(@event.hash_id), notice: 'イベントを作成しました。'
     else
       render :new
