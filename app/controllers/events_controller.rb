@@ -11,7 +11,7 @@ class EventsController < ApplicationController
 
   def index
     # @events = Event.filter_events(current_user, @filter_tags).eager_load(:event_entries, :tags).order(id: :desc).page(params[:page])
-    @events = current_user.related_events.filter_tags(@filter_tags).eager_load(:event_entries, :tags).order(id: :desc).page(params[:page])
+    @events = current_user.related_events.filter_tags(params[:tag_id]).eager_load(:event_entries, :tags).order(id: :desc).page(params[:page])
   end
 
   def show
@@ -42,7 +42,7 @@ class EventsController < ApplicationController
   end
 
   def destroy
-    if EventService.bulk_delete(@event)
+    if @event.destroy
       redirect_to events_path, notice: 'イベントを削除しました。'
     else
       render :show
