@@ -15,17 +15,6 @@ class Event < ActiveRecord::Base
   attr_accessor :options_text
   attr_accessor :options_deletes
 
-  scope :filter_events, ->(user, tag_ids) {
-    if tag_ids.blank?
-      # 自分が作成したイベントと自分が回答したイベント
-      condition = Event.arel_table[:user_id].eq(user).or(EventEntry.arel_table[:user_id].eq(user))
-    else
-      # タグ付けしたイベント
-      condition = Tag.arel_table[:id].in(tag_ids)
-    end
-    where(condition)
-  }
-
   scope :filter_tags, ->(tag_ids) {
     if tag_ids.present?
       where(tags: {id: tag_ids}).joins(:tags)
