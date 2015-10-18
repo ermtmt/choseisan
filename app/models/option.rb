@@ -7,7 +7,7 @@ class Option < ActiveRecord::Base
   attr_accessor :count_ng, :count_neither, :count_ok, :rate
 
   def calc_option_entry
-    feeling_counts = OptionEntry.feeling_groups(self.id)
+    feeling_counts = option_entries.group(:feeling).order(feeling: :asc).count
     self.count_ng      = feeling_counts[0] || 0
     self.count_neither = feeling_counts[1] || 0
     self.count_ok      = feeling_counts[2] || 0
