@@ -18,6 +18,7 @@ gem 'kaminari'            # mtmt add
 gem 'kaminari-bootstrap'  # mtmt add
 gem 'activerecord-import' # mtmt add
 gem 'config'              # mtmt add
+gem 'squeel'              # mtmt add
 
 group :development, :test do
   gem 'byebug'
