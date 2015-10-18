@@ -17,7 +17,7 @@ class Event < ActiveRecord::Base
 
   scope :filter_tags, ->(tag_ids) {
     if tag_ids.present?
-      where(tags: {id: tag_ids}).joins(:tags)
+      joins{ tags }.where{ tags.id.in(tag_ids) }
     end
   }
 

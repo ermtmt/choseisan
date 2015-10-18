@@ -19,7 +19,8 @@ class User < ActiveRecord::Base
   has_many :tags, foreign_key: :user_id, dependent: :destroy
 
   def related_events
+    me = self
     # 自分が作成したイベントと自分が回答したイベント
-    Event.where(Event.arel_table[:user_id].eq(self).or(EventEntry.arel_table[:user_id].eq(self)))
+    Event.joins{ event_entries.outer }.where{ (owner == me) | (event_entries.user == me) }
   end
 end
