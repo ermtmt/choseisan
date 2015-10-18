@@ -14,9 +14,11 @@ class TagsController < ApplicationController
   end
 
   def create
-    @tag = current_user.tags.build(tag_params) # collection_radio_buttons を修正してこれで動くようにしたい
-    # @tag.attributes = { label: tag_params[:label] }
-    # @tag[:color] = tag_params[:color]
+    # collection_radio_buttons を修正してこれで動くようにしたい
+    # @tag = current_user.tags.build(tag_params)
+    @tag = current_user.tags.build
+    @tag.attributes = { label: tag_params[:label] }
+    @tag[:color] = tag_params[:color]
     if @tag.save
       redirect_to tags_path, notice: 'タグを作成しました。'
     else
