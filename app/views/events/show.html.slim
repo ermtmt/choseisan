@@ -11,14 +11,13 @@ scss:
 / インラインで js/css を書くのはやめたい
 
 - title_entry = @event.entered? ? "出欠を変更する" : "出欠を入力する"
-
 - event_entries = @event.event_entries.eager_load(:user, option_entries: :option).order(id: :asc)
 
 .page-header
   h3 = @event.title
   span.label.label-primary 作成者：&nbsp;#{@event.owner.name}
   span &emsp;
-  span.label.label-success 回答数：&nbsp;#{event_entries.count}
+  span.label.label-success 回答数：&nbsp;#{event_entries.length}
 .row
   - if user_signed_in? && current_user.tags.present?
     p.text-right data-toggle="buttons"
