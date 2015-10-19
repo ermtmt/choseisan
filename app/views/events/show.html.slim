@@ -111,13 +111,13 @@ scss:
                 td
                   .btn-group data-toggle="buttons"
                     label.btn.btn-lg.btn-default
-                      = radio_button_tag "event_entry[feelings][#{option_entry.id}][feeling]", OptionEntry.feelings[:NG], radio_options_ng
+                      = radio_button_tag "event_entry[feelings][#{option_entry.id}][feeling]", :NG, radio_options_ng
                       span 　Ｘ　
                     label.btn.btn-lg.btn-default
-                      = radio_button_tag "event_entry[feelings][#{option_entry.id}][feeling]", OptionEntry.feelings[:Neither], radio_options_neither
+                      = radio_button_tag "event_entry[feelings][#{option_entry.id}][feeling]", :Neither, radio_options_neither
                       span 　△　
                     label.btn.btn-lg.btn-default
-                      = radio_button_tag "event_entry[feelings][#{option_entry.id}][feeling]", OptionEntry.feelings[:OK], radio_options_ok
+                      = radio_button_tag "event_entry[feelings][#{option_entry.id}][feeling]", :OK, radio_options_ok
                       span 　◯　
           .form-group
             = f.input :comment, maxlength: 50, class: "form-control"

@@ -3,9 +3,9 @@ class EventEntryController < ApplicationController
   before_action :set_event_entry, only: [:update, :destroy]
 
   def create
-    @event_entry = @event.event_entries.build
+    @event_entry = @event.event_entries.build(entries_params)
     @event_entry.user = current_user
-    if EventEntryService.bulk_insert(@event_entry, entries_params)
+    if @event_entry.save
       flash[:notice] = "出欠を登録しました。"
       render js: "location.reload()"
     else
@@ -14,7 +14,8 @@ class EventEntryController < ApplicationController
   end
 
   def update
-    if EventEntryService.bulk_update(@event_entry, entries_params)
+    @event_entry.attributes = entries_params
+    if @event_entry.save
       flash[:notice] = "出欠を変更しました。"
       render js: "location.reload()"
     else
@@ -23,7 +24,7 @@ class EventEntryController < ApplicationController
  end
 
   def destroy
-    if EventEntryService.bulk_delete(@event_entry)
+    if @event_entry.destroy
       flash[:notice] = "出欠を削除しました。"
       render js: "location.reload()"
     else
