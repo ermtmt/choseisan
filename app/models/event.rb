@@ -1,9 +1,10 @@
 class Event < ActiveRecord::Base
   validates :title, length: { maximum: 50 }, presence: true
   validates :memo,  length: { maximum: 200 }
-  validates :options_text,  length: { maximum: 2000 }
+  validates :options_text, length: { maximum: 2000 }
 
-  before_create :validates_create, :generate_hash_id
+  before_save :build_options_from_options_text
+  before_create :generate_hash_id
 
   belongs_to :owner, class_name: 'User', foreign_key: :user_id
   has_many :options, foreign_key: :event_id, dependent: :destroy
@@ -21,21 +22,31 @@ class Event < ActiveRecord::Base
     end
   }
 
-  before_validation :build_options_from_options_text
-  def build_options_from_options_text
-    if options_text.present?
-      options_text.each_line do |line|
-        self.options.build(text: line.strip)
-      end
+  def destroy_options
+    unless Option.destroy(self.options_deletes.reject(&:blank?))
+      self.errors[:base] << "候補日程の削除に失敗しました"
+      return false
     end
+    return true
   end
 
   private
-    def validates_create
-      if self.options_text.blank?
+    def build_options_from_options_text
+      if self.new_record? && self.options_text.blank?
         self.errors.add(:options_text, "を入力してください。")
         return false
       end
+      new_options = []
+      self.options_text.each_line do |line|
+        # buildだとupdateの時にoptionsに追加されてしまうのでnewでないとダメ
+        option = Option.new(event: self, text: line.strip)
+        if option.invalid?
+          self.errors.add(:options_text, "の各行#{option.errors.messages[:text].first}")
+          return false
+        end
+        new_options << option
+      end
+      self.options << new_options
       return true
     end
 

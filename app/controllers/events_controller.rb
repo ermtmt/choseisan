@@ -33,7 +33,11 @@ class EventsController < ApplicationController
   end
 
   def update
-    if EventService.bulk_update(@event, event_params)
+    @event.attributes = event_params
+    unless @event.destroy_options
+      render :edit
+    end
+    if @event.save
       redirect_to event_path(@event.hash_id), notice: 'イベント情報を変更しました。'
     else
       render :edit
