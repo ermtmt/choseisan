@@ -23,4 +23,12 @@ class User < ActiveRecord::Base
     # 自分が作成したイベントと自分が回答したイベント
     Event.joins{ event_entries.outer }.where{ (owner == me) | (event_entries.user == me) }
   end
+
+  def max_events_created?
+    created_events.count >= Settings.max_count.events
+  end
+
+  def max_tags_created?
+    tags.count >= Settings.max_count.tags
+  end
 end

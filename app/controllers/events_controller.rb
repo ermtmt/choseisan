@@ -103,9 +103,9 @@ class EventsController < ApplicationController
       params.require(:event).permit(:title, :memo, :options_text, options_deletes: [])
     end
 
-    # eventのバリデーションで処理したい
+    # insert実行も新規画面への進入も止める
     def check_created_events_count
-      if current_user.created_events.count >= Settings.max_count.events
+      if current_user.max_events_created?
         redirect_to events_path, alert: "イベントは#{Settings.max_count.events}個までしか作成できません。"
       end
     end
