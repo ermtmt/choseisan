@@ -14,8 +14,7 @@ class EventEntryController < ApplicationController
   end
 
   def update
-    @event_entry.attributes = entries_params
-    if @event_entry.save
+    if @event_entry.update(entries_params)
       flash[:notice] = "出欠を変更しました。"
       render js: "location.reload()"
     else
