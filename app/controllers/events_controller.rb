@@ -34,9 +34,6 @@ class EventsController < ApplicationController
 
   def update
     @event.attributes = event_params
-    unless @event.destroy_options
-      render :edit
-    end
     if @event.save
       redirect_to event_path(@event.hash_id), notice: 'イベント情報を変更しました。'
     else
