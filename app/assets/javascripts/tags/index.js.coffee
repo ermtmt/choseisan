@@ -1,0 +1,2 @@
+$ ->
+  $("#btn-tag-create").popover()

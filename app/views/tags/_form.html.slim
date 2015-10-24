@@ -1,6 +1,4 @@
-coffee:
-  $ ->
-    $(":radio[id^=tag_color]:checked").parent("label").addClass("active")
+= javascript_include_tag "tags/_form"
 
 - ph_label = "（10文字以内・必須）　「未開催」・「重要」　など"
 

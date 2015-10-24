@@ -1,8 +1,4 @@
-coffee:
-  $ ->
-    $("label[for^=event_options_deletes]").popover({
-      trigger: "hover", placement: "right", content: "チェックするとこの候補を削除します"
-    })
+= javascript_include_tag "events/_form_edit"
 
 - ph_options_text = "例：&#13;&#10;4/1(月) 19:00〜&#13;&#10;4/2(火) 20:00〜&#13;&#10;4/3(水) 21:00〜".html_safe
 

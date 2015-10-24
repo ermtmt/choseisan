@@ -1,7 +1,4 @@
-coffee:
-  $ ->
-    $("#btn-event-create").popover()
-    $("a[id^=tag-]").popover()
+= javascript_include_tag "events/index"
 
 .page-header
   h3 = link_to "イベント一覧", reset_events_path, style: "text-decoration: none;"

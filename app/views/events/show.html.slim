@@ -1,14 +1,5 @@
-coffee:
-  $ ->
-    $("#btn-event-delete").popover()
-    $(":radio[id^=event_entry]:checked").parent("label").addClass("active")
-scss:
-  .btn-nonfocus:focus,
-  .btn-nonfocus:hover {
-    background-color: #ffffff;
-    outline: none;
-  }
-/ インラインで js/css を書くのはやめたい
+= stylesheet_link_tag "events/show"
+= javascript_include_tag "events/show"
 
 - title_entry = @event.entered? ? "出欠を変更する" : "出欠を入力する"
 - event_entries = @event.event_entries.eager_load(:user, option_entries: :option).order(id: :asc)
