@@ -24,6 +24,16 @@ class Event < ActiveRecord::Base
     end
   }
 
+  def option_entries_selection(event_entry)
+    selection = []
+    options.each.with_index(0 - options.length) do |option, index|
+      selection << option.option_entries.find_or_initialize_by(event_entry: event_entry) do |option_entry|
+        option_entry.attributes = { id: index, option: option, event_entry: event_entry }
+      end
+    end
+    selection
+  end
+
   private
     def validate_options_text
       if options_text.split(/\n/).select(&:blank?).present?

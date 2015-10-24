@@ -3,7 +3,6 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :tagging]
   before_action :set_my_event, only: [:edit, :update, :destroy]
   before_action :set_event_entry, only: [:show]
-  before_action :set_option_entries_selection, only: [:show]
   before_action :set_tag, only: [:tagging]
   before_action :set_tagging, only: [:tagging]
   before_action :set_filter_tags, only: [:index, :filter]
@@ -86,11 +85,6 @@ class EventsController < ApplicationController
       @event_entry = current_user.event_entries.find_or_initialize_by(event: @event) do |event_entry|
         event_entry.attributes = { event: @event, user: current_user }
       end
-    end
-
-    # view で使うものなので、 view で処理する
-    def set_option_entries_selection
-      @option_entries_selection = OptionEntry.option_entries_selection(@event.options, @event_entry)
     end
 
     def set_tag
