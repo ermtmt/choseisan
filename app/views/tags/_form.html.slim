@@ -14,7 +14,7 @@
       = f.label :color, required: false, class: "control-label"
       br
       .btn-group data-toggle="buttons"
-        = f.collection_radio_buttons :color, Tag.colors, :last, :first, { checked: @tag[:color], boolean_style: :inline, item_wrapper_tag: false } do |b|
+        = f.collection_radio_buttons :color, Tag.colors, :first, :first, { checked: @tag.color, boolean_style: :inline, item_wrapper_tag: false } do |b|
           - label_class = "label-" << color_alias(b.value)
           = b.label(class: "btn btn-lg btn-default") do
             = b.radio_button

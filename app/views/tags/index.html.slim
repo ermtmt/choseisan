@@ -6,7 +6,7 @@
   .col-md-8
     .list-group
       - @tags.each do |tag|
-        - label_class = "label-" << color_alias(tag[:color])
+        - label_class = "label-" << color_alias(tag.color)
         = link_to edit_tag_path(tag), class: "list-group-item"
           h4.list-group-item-heading.tag-list
             span.label.glyphicon.glyphicon-tag.tag-list class="#{label_class}" &emsp;#{tag.label}&emsp;

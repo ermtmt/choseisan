@@ -7,7 +7,7 @@
     - if current_user.tags.present?
       .well
         - current_user.tags.each do |tag|
-          - label_class = "label-" << color_alias(tag[:color])
+          - label_class = "label-" << color_alias(tag.color)
           - btn_active = (@filter_tags.include?(tag.id)) ? "active" : ""
           - pop_message = (btn_active.blank?) ? "#{tag.label}でフィルターします" : "#{tag.label}のフィルターを外します"
           = link_to filter_events_path(tag_id: tag.id),
@@ -21,7 +21,7 @@
           p.list-group-item-text = event.memo.truncate(43)
           .text-right
             - event.tags.where(user: current_user).each do |tag|
-              - label_class = "label-" << color_alias(tag[:color])
+              - label_class = "label-" << color_alias(tag.color)
               span.label.glyphicon.glyphicon-tag class="#{label_class}" &thinsp;#{tag.label}
       = paginate @events
   .col-md-4

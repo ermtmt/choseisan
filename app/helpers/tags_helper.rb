@@ -1,12 +1,12 @@
 module TagsHelper
   def color_alias(value)
     return case value
-      when 0 then "default"
-      when 1 then "primary"
-      when 2 then "success"
-      when 3 then "info"
-      when 4 then "warning"
-      when 5 then "danger"
+      when "gray"   then "default"
+      when "blue"   then "primary"
+      when "green"  then "success"
+      when "sky"    then "info"
+      when "orange" then "warning"
+      when "red"    then "danger"
       else "default"
     end
   end

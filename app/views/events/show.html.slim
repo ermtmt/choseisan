@@ -13,7 +13,7 @@
   - if user_signed_in? && current_user.tags.present?
     p.text-right data-toggle="buttons"
       - current_user.tags.each do |tag|
-        - label_class = "label-" << color_alias(tag[:color])
+        - label_class = "label-" << color_alias(tag.color)
         - btn_active = (@event.taggings.find_by(tag: tag)) ? "active" : ""
         = link_to tagging_event_path(tag_id: tag.id),
           { method: :patch, remote: true, id: "tag-#{tag.id}", class: "btn btn-default btn-nonfocus #{btn_active}" } do

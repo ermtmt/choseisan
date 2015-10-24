@@ -14,11 +14,7 @@ class TagsController < ApplicationController
   end
 
   def create
-    # collection_radio_buttons を修正してこれで動くようにしたい
-    # @tag = current_user.tags.build(tag_params)
-    @tag = current_user.tags.build
-    @tag.attributes = { label: tag_params[:label] }
-    @tag[:color] = tag_params[:color]
+    @tag = current_user.tags.build(tag_params)
     if @tag.save
       redirect_to tags_path, notice: 'タグを作成しました。'
     else
@@ -27,9 +23,7 @@ class TagsController < ApplicationController
   end
 
   def update
-    @tag.attributes = { label: tag_params[:label] }
-    @tag[:color] = tag_params[:color]
-    if @tag.save
+    if @tag.update(tag_params)
       redirect_to tags_path, notice: 'タグを更新しました。'
     else
       render :edit
