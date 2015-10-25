@@ -1,17 +1,22 @@
 = javascript_include_tag "events/index"
 
 .page-header
-  h3 = link_to "イベント一覧", reset_events_path, style: "text-decoration: none;"
+  h3 = link_to "イベント一覧", events_path, style: "text-decoration: none;"
 .row
   .col-md-8
     - if current_user.tags.present?
       .well
         - current_user.tags.each do |tag|
-          - label_class = "label-" << color_alias(tag.color)
-          - btn_active = (@filter_tags.include?(tag.id)) ? "active" : ""
+          - tag_ids = (params[:tag_ids] || []).map(&:to_i)
+          - btn_active = (tag_ids.include?(tag.id)) ? "active" : ""
           - pop_message = (btn_active.blank?) ? "#{tag.label}でフィルターします" : "#{tag.label}のフィルターを外します"
-          = link_to filter_events_path(tag_id: tag.id),
-            method: :post, id: "tag-#{tag.id}", class: "btn btn-default #{btn_active}",
+          - label_class = "label-" << color_alias(tag.color)
+          - if tag_ids.include?(tag.id)
+            - tag_ids.delete(tag.id)
+          - else
+            - tag_ids << tag.id
+          = link_to events_path(tag_ids: tag_ids),
+            id: "tag-#{tag.id}", class: "btn btn-default #{btn_active}",
             data: { toggle: "popover", trigger: "hover", placement: "top", content: pop_message } do
             span.label.glyphicon.glyphicon-tag class="#{label_class}" &thinsp;#{tag.label}&thinsp;
     .list-group
@@ -23,7 +28,7 @@
             - event.tags.where(user: current_user).each do |tag|
               - label_class = "label-" << color_alias(tag.color)
               span.label.glyphicon.glyphicon-tag class="#{label_class}" &thinsp;#{tag.label}
-      = paginate @events
+      = paginate(@events)
   .col-md-4
     - if current_user.created_events.count < Settings.max_count.events
       = link_to "出欠表をつくる", new_event_path,
