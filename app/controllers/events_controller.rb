@@ -64,7 +64,8 @@ class EventsController < ApplicationController
     end
 
     def set_event_entry
-      @event_entry = EventEntry.find_or_initialize_by(event: @event) do |event_entry|
+      # ログインレスでもアクセス可能なため、current_userはnilになり得る
+      @event_entry = EventEntry.find_or_initialize_by(event: @event, user: current_user) do |event_entry|
         event_entry.attributes = { event: @event, user: current_user }
       end
     end
