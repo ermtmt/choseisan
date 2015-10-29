@@ -43,13 +43,15 @@ class Event < ActiveRecord::Base
     end
 
     def generate_hash_id
-      hash_id = SecureRandom.hex
+      self.hash_id = SecureRandom.hex
     end
 
     def destroy_options
-      unless Option.destroy(options_deletes.reject(&:blank?))
-        errors[:base] << "候補日程の削除に失敗しました"
-        return false
+      if persisted?
+        unless Option.destroy(options_deletes.reject(&:blank?))
+          errors[:base] << "候補日程の削除に失敗しました"
+          return false
+        end
       end
     end
 
